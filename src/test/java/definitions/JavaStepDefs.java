@@ -184,13 +184,13 @@ public class JavaStepDefs {
 
     @Given("I have grocery list")
     public void iHaveGroceryList() {
-        String [] groceryList = {"apple","banana","orange","watermelon","pineapple"};
+        String[] groceryList = {"apple", "banana", "orange", "watermelon", "pineapple"};
 
         System.out.println();
-        System.out.println(groceryList [0]);
-        System.out.println(groceryList [2]);
+        System.out.println("First out of grocery list:" + groceryList[0]);
+        System.out.println("Third out of grocery list:" + groceryList[2]);
+        }
 
-    }
 
 }
 
