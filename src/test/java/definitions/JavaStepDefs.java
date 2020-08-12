@@ -188,7 +188,7 @@ public class JavaStepDefs {
 
         System.out.println();
         System.out.println(groceryList [0]);
-        System.out.println(groceryList[2]);
+        System.out.println(groceryList [2]);
 
     }
 
