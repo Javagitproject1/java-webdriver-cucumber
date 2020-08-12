@@ -13,19 +13,15 @@ public class JavaStepDefs {
         String lastName="Gherkin.";
         String color="Green";
         String greeting = "Hi, my name is";
-        String greeting1 = "My favorite color is ";
+        String greeting1 = "My favorite color is";
         String fulltext= greeting + " "+ firstName + " " + lastName + " " + greeting1 + " " +color;
 
-        int a = 1 + 2;
-        a++;
-        int c = a;
-
-        //System.out.println(fulltext);
-        //System.out.println(firstName.getClass());
-        //System.out.println(firstName.length()+lastName.length()+color.length());
-        //System.out.println(firstName.toUpperCase());
-        //System.out.println(firstName.trim());
-        //System.out.println(message);
+        System.out.println(fulltext);
+        System.out.println(firstName.getClass());
+        System.out.println(firstName.length()+lastName.length()+color.length());
+        System.out.println(firstName.toUpperCase());
+        System.out.println(firstName.trim());
+        System.out.println(message);
     }
 
 
