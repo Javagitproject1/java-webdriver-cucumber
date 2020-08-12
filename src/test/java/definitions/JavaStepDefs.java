@@ -11,62 +11,40 @@ public class JavaStepDefs {
 
     @Given("I say {string}")
     public void iSay(String message) {
-
-        String firstName="David";
-        String lastName="Bowie.";
-        String color="Green";
-        String greeting = "Hi, my name is";
-        String greeting1 = "My favorite color is";
-        String fulltext= greeting + " "+ firstName + " " + lastName + " " + greeting1 + " " +color;
-
-        System.out.println(message);
-        System.out.println("greeting: " + (fulltext));
-        System.out.println("greeting length:" + (fulltext.length()));
-        System.out.println("upper case:" + (firstName.toUpperCase()));
-        System.out.println("lower case:" + (lastName.toLowerCase()));
-
-    }
-
-
-    @And("You say {string}")
-    public void youSay(String message) {
-
         System.out.println(message);
     }
 
-    @Given("I say firstName {string}")
-    public void iSayFirstName(String str0) {
+    @Given("I say my name")
+    public void iSayMyName (){
 
-        System.out.println("First Name:" + str0);
+        String firstName = "Michael";
+        String lastName = "Jackson";
+        String favoriteColor = "green";
+
+        System.out.println("First Name:" + firstName);
+        System.out.println("Last Name:" + lastName);
+        System.out.println("Favorite Color:" + favoriteColor);
+        System.out.println("Greeting message:"+ ("Hi, my name is" + " " + firstName +" "+lastName + " " + ", my favorite color is" + " " +favoriteColor));
+        System.out.println("Upper case:"+ ("Hi, my name is" + " " + firstName +" "+lastName + " " + ", my favorite color is" + " " +favoriteColor).toUpperCase());
+        System.out.println("Lower case:"+ ("Hi, my name is" + " " + firstName +" "+lastName + " " + ", my favorite color is" + " " +favoriteColor).toLowerCase());
+        System.out.println("Length :"+ ("Hi, my name is" + " " + firstName +" "+lastName + " " + ", my favorite color is" + " " +favoriteColor).length());
+        System.out.println("Trim:"+ ("Hi, my name is" + " " + firstName +" "+lastName + " " + ", my favorite color is" + " " +favoriteColor).trim());
+        System.out.println("Empty:"+ ("Hi, my name is" + " " + firstName +" "+lastName + " " + ", my favorite color is" + " " +favoriteColor).isEmpty());
+        System.out.println("Get class:"+ ("Hi, my name is" + " " + firstName +" "+lastName + " " + ", my favorite color is" + " " +favoriteColor).getClass());
+
     }
 
-    @And("I say lastName {string}")
-    public void iSayLastName(String str1) {
+    @Given("I have {string} and {string}")
+    public void iHaveAnd(String var0, String var1) {
 
-        System.out.println("Last Name:" +str1);
-    }
-
-    @And("I say favoriteColor {string}")
-    public void iSayFavoriteColor(String str2) {
-
-        System.out.println("Favorite Color:" +str2);
-    }
-
-    @Then("I concatenate {string} with {string}")
-    public void iConcatenateWith(String str3, String str4) {
-
-        System.out.println("city1: " + str3);
-        System.out.println("city2: " + str4);
-
-        System.out.println("upper case: " + str3.toUpperCase());
-        System.out.println("lower case: " + str4.toLowerCase());
-
-        System.out.println("city1 length: " + str3.length());
-        System.out.println("city2 length: " + str4.length());
-
-        System.out.println("city1 = city2:" + (str3.equals(str4)));
-        System.out.println("city1 contains city2:" + (str3.contains(str4)));
-        System.out.println ("concatenation:" + (str3 + " " + (str4)));
+        System.out.println("var1:" + (var0));
+        System.out.println("var2:" + (var1));
+        System.out.println("upper case:" + (var0 + " " + var1).toUpperCase());
+        System.out.println("lower case:" + (var1 + " " + var1).toLowerCase());
+        System.out.println("Length:" + (var1 + " " + var1).length());
+        System.out.println("Equal:" + var0.equals(var1));
+        System.out.println("Equal if ignoring case:" + var0.equalsIgnoreCase(var1));
+        System.out.println("contains:" + var0.contains(var1));
 
     }
 
@@ -83,15 +61,15 @@ public class JavaStepDefs {
 
         //Values for variables assigned inside the Java code
 
-        //int num1 = 20;
-        //int num2 = 33;
+        //int num3 = 20;
+        //int num4 = 33;
 
-        //System.out.println("num1:" +(num1));
-        //System.out.println("num1:" +(num2));
-        //System.out.println("sum:"+ (num1 + (num2)));
-        //System.out.println("difference:"+ (num1 - (num2)));
-        //System.out.println("quotient:"+ (num1 % (num2)));
-        //System.out.println("product:"+ (num1 * (num2)));
+        //System.out.println("num1:" +(num3));
+        //System.out.println("num1:" +(num4));
+        //System.out.println("sum:"+ (num3 + (num4)));
+        //System.out.println("difference:"+ (num3 - (num4)));
+        //System.out.println("quotient:"+ (num3 % (num4)));
+        //System.out.println("product:"+ (num3 * (num4)));
 
     }
 
@@ -102,7 +80,7 @@ public class JavaStepDefs {
 
         System.out.println("Favorite Color:" +(str0));
         System.out.println("Not Favorite Color:" + (notFavoriteColor));
-        System.out.println("Do colors equal?:" + (str0.equals(notFavoriteColor)));
+        System.out.println("Do colors match?:" + (str0==notFavoriteColor));
     }
 
     @Given("I print url for {string} page")
@@ -130,7 +108,7 @@ public class JavaStepDefs {
 
     }
 
-    //using If/else for confiditions
+    //using If/else for conditions
     @And("I print {string} th day of the week")
     public void iPrintThDayOfTheWeek(String str1) {
 
@@ -213,7 +191,6 @@ public class JavaStepDefs {
         System.out.println(groceryList[2]);
 
     }
-
 
 }
 
