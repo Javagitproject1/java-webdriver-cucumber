@@ -281,24 +281,15 @@ public class JavaStepDefs {
 
         Map<String, String> info = new HashMap<>();
 
-        info.put("firstName", "John");
+        info.put("firstName", "David");
         info.put("middleName", "George");
 
         System.out.println(info);
-
-        //swap
-        info.get("firstName");
-        info.put("firstName", "George");
-        info.get("middleName");
-        info.put("middleName", "John");
-
+        String swapname = info.get("firstName");
+        info.put("firstName", info.get("middleName"));
+        info.put("middleName", swapname);
         System.out.println(info);
 
-        //Map <String, String> newInfo = new LinkedHashMap<>();
-        //newInfo.put ("firstName", "John");
-        //newInfo.put("middleName", "George");
-
-        //System.out.println(newInfo);
 
     }
 

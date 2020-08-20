@@ -14,6 +14,8 @@ import support.TestContext;
 import javax.sound.midi.Soundbank;
 
 import java.sql.SQLOutput;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
@@ -23,7 +25,6 @@ public class MarketStepdefs {
     @Given("I go to {string} page")
     public void iGoToPage(String page) throws InterruptedException {
         getDriver().get(page);
-        Thread.sleep(1000);
     }
 
     @And("I print page details")
@@ -50,7 +51,6 @@ public class MarketStepdefs {
         } else {
             getDriver().manage().window().maximize();
         }
-        Thread.sleep(3000);
     }
 
     @When("I fill in required fields")
@@ -87,10 +87,8 @@ public class MarketStepdefs {
         getDriver().findElement(By.xpath("//input[@name='password']")).click();
         getDriver().findElement(By.xpath("//*[text ()= 'Please enter a valid email address.']")).isDisplayed();
         getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(Keys.BACK_SPACE);
-        Thread.sleep(1000);
         getDriver().findElement(By.xpath("//input[@name='email']")).clear();
         getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("testuser1@example.com");
-        Thread.sleep(2000);
 
     }
 
@@ -98,15 +96,13 @@ public class MarketStepdefs {
     public void iAcceptAgreementWithXpath(String str) throws InterruptedException {
 
         getDriver().findElement(By.xpath(str)).click();
-        Thread.sleep(1000);
         getDriver().switchTo().alert().accept();
 
     }
 
-    @And("I dismiss agreement with xpat {string}")
-    public void iDismissAgreementWithXpat(String str) throws InterruptedException {
+    @And("I dismiss agreement with xpath {string}")
+    public void iDismissAgreementWithXpath(String str) throws InterruptedException {
         getDriver().findElement(By.xpath(str)).click();
-        Thread.sleep(1000);
         getDriver().switchTo().alert().dismiss();
 
 
@@ -116,8 +112,6 @@ public class MarketStepdefs {
     public void iSubmitThePage() throws InterruptedException {
 
         getDriver().findElement(By.id("formSubmit")).click();
-
-        Thread.sleep(2000);
     }
 
 
@@ -139,9 +133,86 @@ public class MarketStepdefs {
         assertThat(getDriver().findElement(By.xpath("//b[@name='agreedToPrivacyPolicy']")).getText()).isEqualTo("true");
         assertThat(getDriver().findElement(By.xpath("//b[@name='thirdPartyAgreement']")).getText()).isEqualTo("accepted");
 
-
         Thread.sleep(2000);
 
     }
 
+    @Given("I create my own method")
+    public void iCreateMyOwnMethod() {
+
+        System.out.println("Coding challenges: >>>>>>>");
+    }
+
+    @Given("I swap {int} and {int} element in the array")
+    public void iSwapAndElementInTheArray(int elm1, int elm2) {
+
+        int[] numbers = {5, 2, 9, 7, 3};
+
+        //First method
+        int temp = numbers [elm1-1];
+        numbers [elm1-1]=numbers [elm2-1];
+        numbers [elm2-1]=temp;
+        for (int array : numbers){
+            System.out.print(array + " ");
+        }
+
+        //Second method
+        int temp1 = elm1;
+        elm1 = elm2;
+        elm2 = temp1;
+        for (int i = elm1; i <= numbers.length; i=i+elm1) {
+            System.out.println(numbers[i - 1]);
+        }
+        for (int j = elm2; j <= numbers.length; j=j+elm2) {
+            System.out.println(numbers[j - 1]);
+        }
+    }
+
+    @Given("I have entered number {int}")
+    public void iHaveEnteredNumber(int num1) {
+
+        if (num1 % 3 == 0 && num1 % 4 == 0) {
+            System.out.println("divisible by 3 and 4");
+        } else if (num1 % 3 == 0) {
+            System.out.println("divisible by 3");
+        } else if (num1 % 4 == 0) {
+            System.out.println("divisible by 4");
+        } else {
+            System.out.println("not divisible by 3 or 4");
+        }
+    }
+
+    @And("I print logs to console")
+    public void iPrintLogsToConsole() {
+
+        getDriver().manage().logs().get("browser");
+    }
+
+    @When("I navigate to Look Up a ZIP Code page by address")
+    public void iNavigateToLookUpAZIPCodePageByAddress() throws InterruptedException {
+        getDriver().findElement(By.xpath("//a[@id='mail-ship-width']")).click();
+        Thread.sleep(1000);
+        getDriver().findElement(By.xpath("//h2[@class='header-2 center']//a[text()='Look Up a ZIP Code']")).click();
+        getDriver().findElement(By.xpath("//a[text()='Find by Address']")).click();
+    }
+
+    @And("I fill out {string} street, {string} city, {string} state")
+    public void iFillOutStreetCityState(String str1, String str2, String str3) throws InterruptedException {
+
+        getDriver().findElement(By.id("tAddress")).sendKeys(str1);
+        getDriver().findElement(By.id("tCity")).sendKeys(str2);
+        getDriver().findElement(By.xpath("//select[@id='tState']//option[@value='" + str3 + "']")).click();
+        getDriver().findElement(By.xpath("//a[@id='zip-by-address']")).click();
+        Thread.sleep(2000);
+
+
+    }
+
+    @Then("I validate {string} zip code exist in the result")
+    public void iValidateZipCodeExistInTheResult(String str1) throws InterruptedException{
+
+        assertThat(getDriver().findElement(By.xpath("//div[@id='zipByAddressDiv']")).getText()).contains(str1);
+
+        Thread.sleep(1000);
+    }
 }
