@@ -3,8 +3,10 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import org.apache.bcel.generic.ANEWARRAY;
 import org.openqa.selenium.remote.server.handler.DeleteSession;
 
+import java.lang.reflect.Array;
 import java.sql.SQLOutput;
 import java.util.*;
 
@@ -290,9 +292,112 @@ public class JavaStepDefs {
         info.put("middleName", swapname);
         System.out.println(info);
 
+    }
+
+    @Given("I create my own method")
+    public void iCreateMyOwnMethod() {
+
+        //Given a string s, remove vowels a,e,i,o,u and return the new string
+
+        String s1 = "leetcodeisacommunityforcoders";
+        String replace = s1.replaceAll("a", "");
+        String s2 = replace.replaceAll("e", "");
+        String s3 = s2.replaceAll("o", "");
+        String s4 = s3.replaceAll("i", "");
+        String s5 = s4.replaceAll("u", "");
+        System.out.println(s5);
+
+        String vowels = "aeiou";
+        String news2 = vowels.replaceAll(vowels, " ");
+        System.out.println(news2);
 
     }
 
+    @Given("I swap {int} and {int} element in the array")
+    public void iSwapAndElementInTheArray(int elm1, int elm2) {
 
+        int[] numbers = {5, 2, 9, 7, 3};
+
+        int temp = numbers[elm1 - 1];
+        numbers[elm1 - 1] = numbers[elm2 - 1];
+        numbers[elm2 - 1] = temp;
+
+        for (int array : numbers) {
+            System.out.print(array + " ");
+        }
+    }
+
+    @Given("I have entered number {int}")
+    public void iHaveEnteredNumber(int num1) {
+
+        if (num1 % 3 == 0 && num1 % 4 == 0) {
+            System.out.println("divisible by 3 and 4");
+        } else if (num1 % 3 == 0) {
+            System.out.println("divisible by 3");
+        } else if (num1 % 4 == 0) {
+            System.out.println("divisible by 4");
+        } else {
+            System.out.println("not divisible by 3 or 4");
+        }
+    }
+
+    @Given("I have array")
+    public void iHaveArray() {
+
+        System.out.println("//Write a function that checks if array is empty");
+
+        List<String> array = Arrays.asList("");
+        for (String emptyarray : array) {
+            if (emptyarray.isEmpty()){
+                System.out.println("Array is empty");
+            }else {
+                System.out.println("Arrya is not empty");
+            }
+        }
+
+        System.out.println("");
+
+        int [] numbers = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+
+        System.out.println("//Write a function that prints all integer array");
+
+        for (int array1 : numbers){
+            System.out.print(array1 + " ");
+        }
+
+        System.out.println("");
+        System.out.println("");
+
+        System.out.println("//Write a function that prints all even numbers from integer array");
+        for (int j =0; j<= numbers.length; j++) {
+            if (j % 2 == 0){
+                System.out.print(j + " ");
+            }
+        }
+
+        System.out.println("");
+        System.out.println("");
+
+        System.out.println("//Write a function that checks if array contains another element");
+
+        List<String> fruits = Arrays.asList("apples", "bananas", "mangoes");
+            if (fruits.size() > 1 ){
+                System.out.println("array contains another element");
+            } else  {
+                System.out.println("there is only 1 element in the array");
+            }
+
+        System.out.println("");
+        System.out.println("");
+
+        System.out.println("//Write a function that prints all numbers from 0 to n");
+
+        int n=10;
+        for (int i =0; i<n; i++){
+            System.out.print(i+1 + " ");
+        }
+
+
+    }
 }
 

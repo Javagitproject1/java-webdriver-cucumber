@@ -53,10 +53,28 @@ Feature: My First Java Feature
   Scenario: Print Alphabet from A to Z using ascii
     Given I want to print Alphabet
 
-
   @java13
   Scenario: Exercise with data maps
     Given I have a map
+
+  @java14
+  Scenario: Coding challenges
+    Given I create my own method
+
+  @java15
+  Scenario: Coding task 1
+    Given I swap 3 and 5 element in the array
+
+  @java16
+  Scenario: Coding task 2
+    Given I have entered number 12
+
+  @java17
+  Scenario: Coding challenge
+    Given I have array
+
+
+
 
 
 

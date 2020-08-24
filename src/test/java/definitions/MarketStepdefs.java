@@ -4,26 +4,39 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import support.TestContext;
 
 import javax.sound.midi.Soundbank;
-
+import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.sql.SQLOutput;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.openqa.selenium.Keys.*;
 import static support.TestContext.getDriver;
 import static support.TestContext.initialize;
 
 public class MarketStepdefs {
+    private Object JSpinner;
+
     @Given("I go to {string} page")
-    public void iGoToPage(String page) throws InterruptedException {
+    public void iGoToPage(String page) {
         getDriver().get(page);
     }
 
@@ -43,7 +56,7 @@ public class MarketStepdefs {
     }
 
     @And("I change resolution to {string}")
-    public void iChangeResolutionTo(String res) throws InterruptedException {
+    public void iChangeResolutionTo(String res) {
         if (res.equals("phone")) {
             getDriver().manage().window().setSize(new Dimension(400, 800));
         } else if (res.equals("desktop")) {
@@ -80,20 +93,20 @@ public class MarketStepdefs {
     }
 
     @And("I verify email field behavior")
-    public void iVerifyEmailFieldBehavior() throws InterruptedException {
+    public void iVerifyEmailFieldBehavior() {
 
         getDriver().findElement(By.xpath("//input[@name='email']")).clear();
         getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("testuser1");
         getDriver().findElement(By.xpath("//input[@name='password']")).click();
         getDriver().findElement(By.xpath("//*[text ()= 'Please enter a valid email address.']")).isDisplayed();
-        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(Keys.BACK_SPACE);
+        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(BACK_SPACE);
         getDriver().findElement(By.xpath("//input[@name='email']")).clear();
         getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("testuser1@example.com");
 
     }
 
     @And("I accept agreement with xpath {string}")
-    public void iAcceptAgreementWithXpath(String str) throws InterruptedException {
+    public void iAcceptAgreementWithXpath(String str) {
 
         getDriver().findElement(By.xpath(str)).click();
         getDriver().switchTo().alert().accept();
@@ -101,22 +114,21 @@ public class MarketStepdefs {
     }
 
     @And("I dismiss agreement with xpath {string}")
-    public void iDismissAgreementWithXpath(String str) throws InterruptedException {
+    public void iDismissAgreementWithXpath(String str) {
         getDriver().findElement(By.xpath(str)).click();
         getDriver().switchTo().alert().dismiss();
-
 
     }
 
     @Then("I submit the page")
-    public void iSubmitThePage() throws InterruptedException {
+    public void iSubmitThePage() {
 
         getDriver().findElement(By.id("formSubmit")).click();
     }
 
 
     @And("I verify that fields values are recorded correctly")
-    public void iVerifyThatFieldsValuesAreRecordedCorrectly() throws InterruptedException {
+    public void iVerifyThatFieldsValuesAreRecordedCorrectly() {
 
         assertThat(getDriver().findElement(By.xpath("//legend[@class='applicationResult']")).isDisplayed());
         assertThat(getDriver().findElement(By.xpath("//b[@name='dateOfBirth']")).getText()).isEqualTo("08/07/1980");
@@ -133,53 +145,6 @@ public class MarketStepdefs {
         assertThat(getDriver().findElement(By.xpath("//b[@name='agreedToPrivacyPolicy']")).getText()).isEqualTo("true");
         assertThat(getDriver().findElement(By.xpath("//b[@name='thirdPartyAgreement']")).getText()).isEqualTo("accepted");
 
-        Thread.sleep(2000);
-
-    }
-
-    @Given("I create my own method")
-    public void iCreateMyOwnMethod() {
-
-        System.out.println("Coding challenges: >>>>>>>");
-    }
-
-    @Given("I swap {int} and {int} element in the array")
-    public void iSwapAndElementInTheArray(int elm1, int elm2) {
-
-        int[] numbers = {5, 2, 9, 7, 3};
-
-        //First method
-        int temp = numbers [elm1-1];
-        numbers [elm1-1]=numbers [elm2-1];
-        numbers [elm2-1]=temp;
-        for (int array : numbers){
-            System.out.print(array + " ");
-        }
-
-        //Second method
-        int temp1 = elm1;
-        elm1 = elm2;
-        elm2 = temp1;
-        for (int i = elm1; i <= numbers.length; i=i+elm1) {
-            System.out.println(numbers[i - 1]);
-        }
-        for (int j = elm2; j <= numbers.length; j=j+elm2) {
-            System.out.println(numbers[j - 1]);
-        }
-    }
-
-    @Given("I have entered number {int}")
-    public void iHaveEnteredNumber(int num1) {
-
-        if (num1 % 3 == 0 && num1 % 4 == 0) {
-            System.out.println("divisible by 3 and 4");
-        } else if (num1 % 3 == 0) {
-            System.out.println("divisible by 3");
-        } else if (num1 % 4 == 0) {
-            System.out.println("divisible by 4");
-        } else {
-            System.out.println("not divisible by 3 or 4");
-        }
     }
 
     @And("I print logs to console")
@@ -189,30 +154,232 @@ public class MarketStepdefs {
     }
 
     @When("I navigate to Look Up a ZIP Code page by address")
-    public void iNavigateToLookUpAZIPCodePageByAddress() throws InterruptedException {
-        getDriver().findElement(By.xpath("//a[@id='mail-ship-width']")).click();
-        Thread.sleep(1000);
-        getDriver().findElement(By.xpath("//h2[@class='header-2 center']//a[text()='Look Up a ZIP Code']")).click();
+    public void iNavigateToLookUpAZIPCodePageByAddress() {
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"))).perform();
+        getDriver().findElement(By.xpath("//a[contains(@href,'ZipLookup')][text () = 'Look Up a ZIP Code']")).click();
+
+        //getDriver().findElement(By.xpath("//a[@id='mail-ship-width']")).click();
+        //getDriver().findElement(By.xpath("//h2[@class='header-2 center']//a[text()='Look Up a ZIP Code']")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 3);
+        WebElement result = getDriver().findElement(By.xpath("//a[text()='Find by Address']"));
+        wait.until(ExpectedConditions.elementToBeClickable(result));
         getDriver().findElement(By.xpath("//a[text()='Find by Address']")).click();
+
     }
 
     @And("I fill out {string} street, {string} city, {string} state")
-    public void iFillOutStreetCityState(String str1, String str2, String str3) throws InterruptedException {
+    public void iFillOutStreetCityState(String str1, String str2, String str3) {
 
         getDriver().findElement(By.id("tAddress")).sendKeys(str1);
         getDriver().findElement(By.id("tCity")).sendKeys(str2);
-        getDriver().findElement(By.xpath("//select[@id='tState']//option[@value='" + str3 + "']")).click();
-        getDriver().findElement(By.xpath("//a[@id='zip-by-address']")).click();
-        Thread.sleep(2000);
 
+        Select optionSelect = new Select(getDriver().findElement(By.xpath("//select[@id='tState']")));
+        optionSelect.selectByValue(str3);
+
+        //getDriver().findElement(By.xpath("//select[@id='tState']//option[@value='" + str3 + "']")).click();
+
+        getDriver().findElement(By.xpath("//a[@id='zip-by-address']")).click();
 
     }
 
     @Then("I validate {string} zip code exist in the result")
-    public void iValidateZipCodeExistInTheResult(String str1) throws InterruptedException{
+    public void iValidateZipCodeExistInTheResult(String str1) {
+
+        WebDriverWait waitforresults = new WebDriverWait(getDriver(), 2);
+        WebElement results = getDriver().findElement(By.xpath("//div[@id='zipByAddressDiv']"));
+        waitforresults.until(ExpectedConditions.textToBePresentInElement(results, str1));
 
         assertThat(getDriver().findElement(By.xpath("//div[@id='zipByAddressDiv']")).getText()).contains(str1);
 
-        Thread.sleep(1000);
+    }
+
+    @When("I go to Calculate Price Page")
+    public void iGoToCalculatePricePage() {
+
+        Actions action = new Actions(getDriver());
+        action.moveToElement(getDriver().findElement(By.xpath("//a[@href='#'] [text()='Quick Tools']"))).perform();
+        getDriver().findElement(By.xpath("//li//*[contains(@src,'calculate_price')]")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 2);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("CountryID")));
+
+    }
+
+    @And("I select {string} with {string} shape")
+    public void iSelectWithShape(String str1, String str2) {
+
+        str2 = "//input[@id='option_1']";
+        Select option = new Select(getDriver().findElement(By.xpath("//select[@id='CountryID']")));
+        option.selectByVisibleText(str1);
+
+        getDriver().findElement(By.xpath(str2)).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 2);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("quantity-0")));
+    }
+
+    @And("I define {int} quantity")
+    public void iDefineQuantity(int num) {
+        getDriver().findElement(By.id("quantity-0")).sendKeys("2");
+    }
+
+    @Then("I calculate the price and validate cost is {string}")
+    public void iCalculateThePriceAndValidateCostIs(String str) {
+
+        getDriver().findElement(By.xpath("//input [@type='button']")).click();
+        assertThat(getDriver().findElement(By.id("total")).getText()).isEqualTo(str);
+    }
+
+    @When("I perform {string} search")
+    public void iPerformSearch(String str) {
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(getDriver().findElement(By.xpath("//a[@id='navsearch']//.."))).perform();
+        getDriver().findElement(By.id("global-header--search-track-search")).click();
+        getDriver().findElement(By.id("global-header--search-track-search")).sendKeys(str);
+        getDriver().findElement(By.id("global-header--search-track-search")).sendKeys(ENTER);
+        getDriver().manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+    }
+
+    @And("I set {string} in filters")
+    public void iSetInFilters(String str) {
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 3);
+        WebElement spinner = getDriver().findElement(By.xpath("//div[@class='white-spinner-container']"));
+        wait.until(ExpectedConditions.invisibilityOf(spinner));
+        getDriver().findElement(By.xpath("//div[@id='dyn_nav']//*[(text()='" + str + "')]")).click();
+    }
+
+    @Then("I verify that {string} results found")
+    public void iVerifyThatResultsFound(String str) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), 3);
+        WebElement spinner = getDriver().findElement(By.xpath("//div[@class='white-spinner-container']"));
+        wait.until(ExpectedConditions.invisibilityOf(spinner));
+        assertThat(getDriver().findElement(By.xpath("//span [@ID='searchResultsHeading']")).getText()).contains(str + " results found for ");
+    }
+
+    @When("I select {string} in results")
+    public void iSelectInResults(String str) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), 3);
+        WebElement spinner = getDriver().findElement(By.xpath("//div[@class='white-spinner-container']"));
+        wait.until(ExpectedConditions.invisibilityOf(spinner));
+        getDriver().findElement(By.xpath("//span[contains(text(),'" + str + "')]")).click();
+    }
+
+    @And("I click {string} button")
+    public void iClickButton(String str) {
+
+        getDriver().findElement(By.xpath("//a[@target='_blank'] [contains(text(),'" + str + "')]")).click();
+
+        String currentWindowHandle = getDriver().getWindowHandle();
+        for (String handle : getDriver().getWindowHandles()) {
+            if (!currentWindowHandle.equals(handle)) {
+                getDriver().switchTo().window(handle);
+            }
+        }
+    }
+
+    @Then("I validate that Sign In is required")
+    public void iValidateThatSignInIsRequired() {
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+        WebElement signIn = getDriver().findElement(By.xpath("//h1 [@id='sign-in-to-your-account-header']"));
+        wait.until(ExpectedConditions.textToBePresentInElement(signIn, "Sign In To Your Account"));
+    }
+
+    @When("I go to {string} tab")
+    public void iGoToTab(String str) {
+
+        getDriver().findElement(By.xpath("//a [@class='menuitem'][text()='" + str + "']")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+        WebElement results = getDriver().findElement(By.xpath("//div[@class='spinner']"));
+        wait.until(ExpectedConditions.invisibilityOfAllElements(results));
+    }
+
+    @And("I perform {string} help search")
+    public void iPerformHelpSearch(String str)  {
+
+        getDriver().findElement(By.xpath("//input[@placeholder='Search for a topic']")).sendKeys(str);
+        getDriver().findElement(By.xpath("//input[@placeholder='Search for a topic']")).sendKeys(ENTER);
+    }
+
+    @Then("I verify that no results of {string} available in help search")
+    public void iVerifyThatNoResultsOfAvailableInHelpSearch(String str) {
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2/*[contains (text (), 'Articles')]")));
+        assertThat(getDriver().findElement(By.xpath("//div[@class='resultsWrapper']//*[contains(text(),'')]")).getText()).doesNotContain(str);
+
+    }
+
+    @When("I navigate to Find a USPS Location page")
+    public void iNavigateToFindAUSPSLocationPage() {
+
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(getDriver().findElement(By.xpath("//a[@id='mail-ship-width']"))).perform();
+        getDriver().findElement(By.xpath("//a[contains(@href,'location')][text () = 'Find a USPS Location']")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+        WebElement location = getDriver().findElement(By.xpath("//h1[contains(text(),'Find Locations')]"));
+        wait.until(ExpectedConditions.visibilityOf(location));
+    }
+
+    @And("I filter by {string} location types, {string} services, {string} available services")
+    public void iFilterByLocationTypesServicesAvailableServices(String str1, String str2, String str3) {
+
+        Actions action1 = new Actions(getDriver());
+        action1.moveToElement(getDriver().findElement(By.xpath("//button [@id='post-offices-select']"))).click();
+        action1.moveToElement(getDriver().findElement(By.xpath("//a [text () = '" + str1 + "'][@data-value='po']"))).click().perform();
+
+        Actions action2 = new Actions(getDriver());
+        action2.moveToElement(getDriver().findElement(By.xpath("//button [@id='service-type-select']"))).click();
+        action2.moveToElement(getDriver().findElement(By.xpath("//a [text () = '" + str2 + "'][@data-value='pickup']"))).click().perform();
+
+        Actions action3 = new Actions(getDriver());
+        action3.moveToElement(getDriver().findElement(By.xpath("//button [@id='available-service-select']"))).click();
+        action3.moveToElement(getDriver().findElement(By.xpath("//a [text () = '" + str3 + "'][@data-value='accountable']"))).click().perform();
+
+    }
+
+    @And("I provide data as {string} street, {string} city, {string} state")
+    public void iProvideDataAsStreetCityState(String str1, String str2, String str3) {
+
+        getDriver().findElement(By.xpath("//input [@id='search-input']")).click();
+
+        Actions action1 = new Actions(getDriver());
+        action1.moveToElement(getDriver().findElement(By.xpath("//input [@id='search-input']"))).click().perform();
+
+        getDriver().switchTo().activeElement();
+
+        Actions action2 = new Actions(getDriver());
+        action2.moveToElement(getDriver().findElement(By.xpath("//input [@id = 'addressLineOne']"))).perform();
+        getDriver().findElement(By.xpath("//input [@id = 'addressLineOne']")).click();
+        getDriver().findElement(By.xpath("//input [@id = 'addressLineOne']")).sendKeys(str1);
+
+        Actions action3 = new Actions(getDriver());
+        action3.moveToElement(getDriver().findElement(By.xpath("//input [@id = 'cityOrZipCode']"))).perform();
+        getDriver().findElement(By.xpath("//input [@id = 'cityOrZipCode']")).click();
+        getDriver().findElement(By.xpath("//input [@id = 'cityOrZipCode']")).sendKeys(str2);
+
+        Select option = new Select(getDriver().findElement(By.xpath("//select[@id='servicesStateSelect']")));
+        option.selectByValue(str3);
+
+        getDriver().findElement(By.xpath("//a [@class = 'btn-primary'] [text () = 'Go to Results']")).click();
+
+    }
+
+    @Then("I verify phone number is {string}")
+    public void iVerifyPhoneNumberIs(String str1) {
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+        WebElement results = getDriver().findElement(By.id("resultBox"));
+        wait.until(ExpectedConditions.visibilityOfAllElements(results));
+
+        getDriver().findElement(By.xpath("//div [@id='resultBox']/div [@class='list-item-location popover-trigger'] [1]")).click();
+        assertThat(getDriver().findElement(By.xpath("//div [@id='po-location-detail']")).getText()).contains(str1);
     }
 }
