@@ -34,7 +34,7 @@ Feature: Marketing test suite
     Given I open url "https://www.usps.com/"
     When I go to Calculate Price Page
     And I select "Canada" with "Postcard" shape
-    And I define 2 quantity
+    And I define "2" quantity
     Then I calculate the price and validate cost is "$2.40"
 
   @market8

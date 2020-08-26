@@ -348,20 +348,20 @@ public class JavaStepDefs {
 
         List<String> array = Arrays.asList("");
         for (String emptyarray : array) {
-            if (emptyarray.isEmpty()){
+            if (emptyarray.isEmpty()) {
                 System.out.println("Array is empty");
-            }else {
+            } else {
                 System.out.println("Arrya is not empty");
             }
         }
 
         System.out.println("");
 
-        int [] numbers = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+        int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
         System.out.println("//Write a function that prints all integer array");
 
-        for (int array1 : numbers){
+        for (int array1 : numbers) {
             System.out.print(array1 + " ");
         }
 
@@ -369,8 +369,8 @@ public class JavaStepDefs {
         System.out.println("");
 
         System.out.println("//Write a function that prints all even numbers from integer array");
-        for (int j =0; j<= numbers.length; j++) {
-            if (j % 2 == 0){
+        for (int j = 0; j <= numbers.length; j++) {
+            if (j % 2 == 0) {
                 System.out.print(j + " ");
             }
         }
@@ -381,23 +381,61 @@ public class JavaStepDefs {
         System.out.println("//Write a function that checks if array contains another element");
 
         List<String> fruits = Arrays.asList("apples", "bananas", "mangoes");
-            if (fruits.size() > 1 ){
-                System.out.println("array contains another element");
-            } else  {
-                System.out.println("there is only 1 element in the array");
-            }
+        if (fruits.size() > 1) {
+            System.out.println("array contains another element");
+        } else {
+            System.out.println("there is only 1 element in the array");
+        }
 
         System.out.println("");
         System.out.println("");
 
         System.out.println("//Write a function that prints all numbers from 0 to n");
 
-        int n=10;
-        for (int i =0; i<n; i++){
-            System.out.print(i+1 + " ");
+        int n = 10;
+        for (int i = 0; i < n; i++) {
+            System.out.print(i + 1 + " ");
         }
 
+        System.out.println("");
+        System.out.println("");
 
+        System.out.println("//Write a function that supports negative numbers");
+        //function that prints only negative numbers
+        List<Integer> negative = Arrays.asList(-1, -2, -3, -6, 0, 5, 2, 4, 6, -15);
+        for (int i : negative) {
+            if (i < 0) {
+                System.out.print(i + " ");
+            }
+        }
+
+        //function that checks if number is positive or not
+        int num = 10;
+        if (num < 0) {
+            System.out.println(num + " " + "number is negative");
+        } else if (num > 0) {
+            System.out.println(num + " " + "number is positive");
+        } else {
+            System.out.println("number equals to 0");
+        }
+
+        System.out.println("");
+        System.out.println("");
+
+        System.out.println("//Write a function that accepts integer argument");
+
+        int max = 16;
+        for (int i = 1; i <= max; i++) {
+            if (i % 3 == 0 && i % 5 == 0) {
+                System.out.print("FizzBuzz ");
+            } else if (i % 3 == 0) {
+                System.out.print("Fizz ");
+            } else if (i % 5 == 0) {
+                System.out.print("Buzz ");
+            } else {
+                System.out.print(i + " ");
+            }
+        }
     }
 }
 

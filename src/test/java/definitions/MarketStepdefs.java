@@ -221,9 +221,9 @@ public class MarketStepdefs {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("quantity-0")));
     }
 
-    @And("I define {int} quantity")
-    public void iDefineQuantity(int num) {
-        getDriver().findElement(By.id("quantity-0")).sendKeys("2");
+    @And("I define {string} quantity")
+    public void iDefineQuantity(String str) {
+        getDriver().findElement(By.id("quantity-0")).sendKeys(str);
     }
 
     @Then("I calculate the price and validate cost is {string}")
@@ -263,10 +263,11 @@ public class MarketStepdefs {
 
     @When("I select {string} in results")
     public void iSelectInResults(String str) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), 3);
+        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
         WebElement spinner = getDriver().findElement(By.xpath("//div[@class='white-spinner-container']"));
         wait.until(ExpectedConditions.invisibilityOf(spinner));
         getDriver().findElement(By.xpath("//span[contains(text(),'" + str + "')]")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='button--primary']")));
     }
 
     @And("I click {string} button")
@@ -288,6 +289,8 @@ public class MarketStepdefs {
         WebDriverWait wait = new WebDriverWait(getDriver(), 5);
         WebElement signIn = getDriver().findElement(By.xpath("//h1 [@id='sign-in-to-your-account-header']"));
         wait.until(ExpectedConditions.textToBePresentInElement(signIn, "Sign In To Your Account"));
+
+        assertThat(getDriver().findElement(By.xpath("//*[@id='btn-submit']")).isDisplayed());
     }
 
     @When("I go to {string} tab")
