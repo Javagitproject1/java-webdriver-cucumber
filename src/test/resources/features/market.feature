@@ -17,7 +17,7 @@ Feature: Marketing test suite
     When I fill in required fields
     And I verify email field behavior
     And I accept agreement with xpath "//*[@id='thirdPartyButton']"
-      #And I dismiss agreement with xpath "//*[@id='thirdPartyButton']"
+          #And I dismiss agreement with xpath "//*[@id='thirdPartyButton']"
     Then I submit the page
     And I verify that fields values are recorded correctly
 
@@ -61,6 +61,35 @@ Feature: Marketing test suite
     And I filter by "Post Offices" location types, "Pickup Services" services, "Accountable Mail" available services
     And I provide data as "4970 El Camino Real 110" street, "Los Altos" city, "CA" state
     Then I verify phone number is "800-275-8777"
+
+  @market11
+  Scenario: Unit Converter
+    Given I open url "https://www.unitconverters.net/"
+    When I click on "Temperature"
+    And I convert from "Celsius" to "Fahrenheit"
+    Then I enter value "30" and verify result
+
+  @market12
+  Scenario: Verify calculator result
+    Given I open url "https://www.calculator.net/"
+    When I navigate to "Auto Loan Calculator"
+    And I clear all calculator fields
+    And I calculate
+    Then I verify "Please provide a positive auto price." calculator error
+    And I enter "25000" price, "60" months, "4.5" interest, "5000" down payment, "0" trade-in, "California" state, "7" percent tax, "300" fees
+    And I calculate
+    Then I verify monthly pay is "$372.86"
+
+  @market13
+  Scenario: Every door direct mail
+    Given I open url "https://www.usps.com/"
+    When I go to "Every Door Direct Mail" under "Business"
+    And I search for "4970 El Camino Real, Los Altos, CA 94022"
+    And I click "Show Table" on the map
+    When I click "Select All" on the table
+    And I close modal window
+        #Then I verify that summary of all rows of Cost column is equal Approximate Cost in Order
+
 
 
 

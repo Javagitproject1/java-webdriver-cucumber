@@ -304,7 +304,7 @@ public class MarketStepdefs {
     }
 
     @And("I perform {string} help search")
-    public void iPerformHelpSearch(String str)  {
+    public void iPerformHelpSearch(String str) {
 
         getDriver().findElement(By.xpath("//input[@placeholder='Search for a topic']")).sendKeys(str);
         getDriver().findElement(By.xpath("//input[@placeholder='Search for a topic']")).sendKeys(ENTER);
@@ -384,5 +384,149 @@ public class MarketStepdefs {
 
         getDriver().findElement(By.xpath("//div [@id='resultBox']/div [@class='list-item-location popover-trigger'] [1]")).click();
         assertThat(getDriver().findElement(By.xpath("//div [@id='po-location-detail']")).getText()).contains(str1);
+    }
+
+    @When("I click on {string}")
+    public void iClickOn(String unit)  {
+        switch (unit) {
+            case "Length":
+                getDriver().findElement(By.xpath("//div[@id='menu']//*[contains(text (),'Length')]")).click();
+                break;
+            case "Temperature":
+                getDriver().findElement(By.xpath("//div[@id='menu']//*[contains(text (),'Temperature')]")).click();
+                break;
+            case "Area":
+                getDriver().findElement(By.xpath("//div[@id='menu']//*[contains(text (),'Area')]")).click();
+                break;
+            case "Volume":
+                getDriver().findElement(By.xpath("//div[@id='menu']//*[contains(text (),'Volume')]")).click();
+                break;
+            case "Weight":
+                getDriver().findElement(By.xpath("//div[@id='menu']//*[contains(text (),'Weight')]")).click();
+                break;
+            case "Time":
+                getDriver().findElement(By.xpath("//div[@id='menu']//*[contains(text (),'Time')]")).click();
+                break;
+            default:
+                throw new RuntimeException("Unsupported " + unit);
+        }
+
+    }
+
+    @And("I convert from {string} to {string}")
+    public void iConvertFromTo(String unitfrom, String unitto)  {
+        Select from = new Select(getDriver().findElement(By.xpath("//select[@id='calFrom']")));
+        from.selectByVisibleText(unitfrom);
+
+        Select to = new Select(getDriver().findElement(By.xpath("//select[@id='calTo']")));
+        to.selectByVisibleText(unitto);
+
+    }
+
+    @Then("I enter value {string} and verify result")
+    public void iEnterValueAndVerifyResult(String value)  {
+        getDriver().findElement(By.xpath("//input [@name='fromVal']")).sendKeys(value);
+        WebElement result = getDriver().findElement(By.xpath("//div [@id='calResults']"));
+        assertThat(result.isDisplayed());
+        System.out.println(result.getText());
+    }
+
+    @When("I navigate to {string}")
+    public void iNavigateTo(String str) {
+        Actions navigate = new Actions(getDriver());
+        navigate.moveToElement(getDriver().findElement(By.xpath("//div [@id='homelistdiv']//*[contains(text(), '" + str + "')]"))).click().perform();
+
+    }
+
+    @And("I clear all calculator fields")
+    public void iClearAllCalculatorFields()  {
+        getDriver().findElement(By.xpath("//input[@id='cloanamount']")).clear();
+        getDriver().findElement(By.xpath("//input[@id='cloanterm']")).clear();
+        getDriver().findElement(By.xpath("//input[@id='cinterestrate']")).clear();
+        getDriver().findElement(By.xpath("//input[@id='cdownpayment']")).clear();
+        getDriver().findElement(By.xpath("//input[@id='ctradeinvalue']")).clear();
+        getDriver().findElement(By.xpath("//input[@id='csaletax']")).clear();
+        getDriver().findElement(By.xpath("//input[@id='ctitlereg']")).clear();
+
+    }
+
+    @And("I calculate")
+    public void iCalculate() {
+        getDriver().findElement(By.xpath("//input[contains (@src, 'calculate.svg')]")).click();
+    }
+
+    @Then("I verify {string} calculator error")
+    public void iVerifyCalculatorError(String error) {
+        assertThat(getDriver().findElement(By.xpath("//a[@name='autoloanresult']//..//*[contains(text(),'" + error + "')]")).isDisplayed());
+    }
+
+    @And("I enter {string} price, {string} months, {string} interest, {string} down payment, {string} trade-in, {string} state, {string} percent tax, {string} fees")
+    public void iEnterPriceMonthsInterestDownPaymentTradeInStatePercentTaxFees(String price, String term, String rate, String downp, String tradein, String state, String tax, String fees) {
+        getDriver().findElement(By.xpath("//input[@id='cloanamount']")).sendKeys(price);
+        getDriver().findElement(By.xpath("//input[@id='cloanterm']")).sendKeys(term);
+        getDriver().findElement(By.xpath("//input[@id='cinterestrate']")).sendKeys(rate);
+        getDriver().findElement(By.xpath("//input[@id='cdownpayment']")).sendKeys(downp);
+        getDriver().findElement(By.xpath("//input[@id='ctradeinvalue']")).sendKeys(tradein);
+
+        Select stateoption = new Select(getDriver().findElement(By.xpath("//select[@name='cstate']")));
+        stateoption.selectByVisibleText(state);
+
+        getDriver().findElement(By.xpath("//input[@id='csaletax']")).sendKeys(tax);
+        getDriver().findElement(By.xpath("//input[@id='ctitlereg']")).sendKeys(fees);
+    }
+
+    @Then("I verify monthly pay is {string}")
+    public void iVerifyMonthlyPayIs(String result) {
+        assertThat(getDriver().findElement(By.xpath("//h2[@class='h2result']")).getText()).contains(result);
+    }
+
+    @When("I go to {string} under {string}")
+    public void iGoToUnder(String option, String menu) {
+        Actions navigate = new Actions(getDriver());
+        navigate.moveToElement(getDriver().findElement(By.xpath("//a[@href= 'https://www.usps.com/business/']"))).perform();
+        getDriver().findElement(By.xpath("//a[@href= 'https://eddm.usps.com/eddm/customer/routeSearch.action']")).click();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 25);
+        //WebElement eddm = getDriver().findElement(By.xpath("//h1[text()=' Every Door Direct Mail']"));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()=' Every Door Direct Mail']")));
+    }
+
+    @And("I search for {string}")
+    public void iSearchFor(String text) throws InterruptedException {
+
+        getDriver().findElement(By.xpath("//*[@id='address']")).sendKeys(text);
+        getDriver().findElement(By.xpath("//*[@id='address']")).sendKeys(ENTER);
+
+        Thread.sleep(10000);
+//        WebDriverWait wait = new WebDriverWait(getDriver(),10);
+//        getDriver().switchTo().frame("");
+//        WebElement progressbar = getDriver().findElement(By.xpath("//div[@id='USPS.EDDM.mapPane']"));
+//        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("eddm_overlay-progress")));
+//        //wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("eddm_overlay-progress']")));
+    }
+
+    @And("I click {string} on the map")
+    public void iClickOnTheMap(String button) {
+        getDriver().findElement(By.xpath("//a[contains (text(),'" + button + "')]")).click();
+    }
+
+    @When("I click {string} on the table")
+    public void iClickOnTheTable(String button) {
+
+        Actions select = new Actions(getDriver());
+        select.moveToElement(getDriver().findElement(By.xpath("//a[@class='totalsArea'][contains(text(),'Select All')]"))).click().perform();
+        //getDriver().findElement(By.xpath("//a[@class='totalsArea'][contains(text(),'Select All')]")).click();
+    }
+
+    @And("I close modal window")
+    public void iCloseModalWindow() {
+        getDriver().switchTo().activeElement();
+        getDriver().findElement(By.xpath("//div[@id='modal-box-closeModal']")).click();
+    }
+
+    @Then("I verify that summary of all rows of Cost column is equal Approximate Cost in Order")
+    public void iVerifyThatSummaryOfAllRowsOfCostColumnIsEqualApproximateCostInOrder() {
+
+
     }
 }
