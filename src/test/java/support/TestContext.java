@@ -2,10 +2,7 @@
 package support;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Platform;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,10 +11,18 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,6 +35,38 @@ public class TestContext {
 
     public static WebDriver getDriver() {
         return driver;
+    }
+
+    //Extracted WebDriverWait function
+    public static WebDriverWait getWait() {
+        return getWait(2);
+    }
+
+    public static WebDriverWait getWait(int timeout) {
+        return new WebDriverWait(getDriver(), timeout);
+    }
+
+    //Extracted Actions function
+    public static Actions getActions() {
+        return new Actions(driver);
+    }
+
+    //Extracted JavaScriptExecutor function
+    public static JavascriptExecutor getExecutor() {
+        return (JavascriptExecutor) driver;
+    }
+
+    public static Map<String, String> getData(String fileName) {
+
+        try {
+            String myPath = System.getProperty("user.dir") + "/src/test/resources/data/" + fileName + ".yml";
+            File myFile = new File(myPath);
+            InputStream stream = new FileInputStream(myFile);
+            Yaml myYaml = new Yaml();
+            return myYaml.load(stream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void initialize() {
@@ -55,7 +92,9 @@ public class TestContext {
                     chromePreferences.put("download.default_directory", System.getProperty("user.dir") + "/src/test/resources/downloads");
                     chromePreferences.put("safebrowsing.enabled", false);
                     chromePreferences.put("plugins.always_open_pdf_externally", true);
-                    chromePreferences.put("plugins.plugins_disabled", new ArrayList<String>(){{ add("Chrome PDF Viewer"); }});
+                    chromePreferences.put("plugins.plugins_disabled", new ArrayList<String>() {{
+                        add("Chrome PDF Viewer");
+                    }});
                     chromePreferences.put("credentials_enable_service", false);
                     chromePreferences.put("password_manager_enabled", false);
                     ChromeOptions chromeOptions = new ChromeOptions();
@@ -95,7 +134,7 @@ public class TestContext {
                 default:
                     throw new RuntimeException("Driver is not implemented for: " + browser);
             }
-        } else if (testEnv.equals("grid")){
+        } else if (testEnv.equals("grid")) {
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setBrowserName(browser);
             capabilities.setPlatform(Platform.ANY);

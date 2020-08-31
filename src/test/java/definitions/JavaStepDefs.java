@@ -2,12 +2,7 @@ package definitions;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import org.apache.bcel.generic.ANEWARRAY;
-import org.openqa.selenium.remote.server.handler.DeleteSession;
 
-import java.lang.reflect.Array;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class JavaStepDefs {
@@ -341,25 +336,23 @@ public class JavaStepDefs {
         }
     }
 
-    @Given("I have array")
-    public void iHaveArray() {
+    @Given("I have coding tasks")
+    public void iHaveCodingTasks() {
 
-        System.out.println("//Write a function that checks if array is empty");
-
+        System.out.println("1. Write a function that checks if array is empty");
         List<String> array = Arrays.asList("");
         for (String emptyarray : array) {
             if (emptyarray.isEmpty()) {
                 System.out.println("Array is empty");
+            } else if (emptyarray.equals(null)) {
+                System.out.println("Array is null");
             } else {
-                System.out.println("Arrya is not empty");
+                System.out.println("Array is not empty ");
             }
         }
-
         System.out.println("");
-
+        System.out.println("2. Write a function that prints all integer array");
         int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-
-        System.out.println("//Write a function that prints all integer array");
 
         for (int array1 : numbers) {
             System.out.print(array1 + " ");
@@ -367,19 +360,15 @@ public class JavaStepDefs {
 
         System.out.println("");
         System.out.println("");
-
-        System.out.println("//Write a function that prints all even numbers from integer array");
+        System.out.println("3. Write a function that prints all even numbers from integer array");
         for (int j = 0; j <= numbers.length; j++) {
             if (j % 2 == 0) {
                 System.out.print(j + " ");
             }
         }
-
         System.out.println("");
         System.out.println("");
-
-        System.out.println("//Write a function that checks if array contains another element");
-
+        System.out.println("4. Write a function that checks if array contains another element");
         List<String> fruits = Arrays.asList("apples", "bananas", "mangoes");
         if (fruits.size() > 1) {
             System.out.println("array contains another element");
@@ -387,11 +376,9 @@ public class JavaStepDefs {
             System.out.println("there is only 1 element in the array");
         }
 
-        System.out.println("");
-        System.out.println("");
 
-        System.out.println("//Write a function that prints all numbers from 0 to n");
-
+        System.out.println("");
+        System.out.println("5. Write a function that prints all numbers from 0 to n");
         int n = 10;
         for (int i = 0; i < n; i++) {
             System.out.print(i + 1 + " ");
@@ -399,17 +386,16 @@ public class JavaStepDefs {
 
         System.out.println("");
         System.out.println("");
-
-        System.out.println("//Write a function that supports negative numbers");
-        //function that prints only negative numbers
+        System.out.println("6. Write a function that supports negative numbers");
         List<Integer> negative = Arrays.asList(-1, -2, -3, -6, 0, 5, 2, 4, 6, -15);
         for (int i : negative) {
             if (i < 0) {
                 System.out.print(i + " ");
             }
         }
-
-        //function that checks if number is positive or not
+        System.out.println("");
+        System.out.println("");
+        System.out.println("7. Write a function that checks if number is positive or not");
         int num = 10;
         if (num < 0) {
             System.out.println(num + " " + "number is negative");
@@ -420,9 +406,8 @@ public class JavaStepDefs {
         }
 
         System.out.println("");
-        System.out.println("");
 
-        System.out.println("//Write a function that accepts integer argument");
+        System.out.println("8. Write a function that accepts integer argument");
 
         int max = 16;
         for (int i = 1; i <= max; i++) {
@@ -436,6 +421,50 @@ public class JavaStepDefs {
                 System.out.print(i + " ");
             }
         }
+        System.out.println("");
+    }
+
+    @Given("I have a function to reverses a {string}")
+    public void iHaveAFunctionToReversesA(String str) {
+        System.out.println("Original string:"+ str);
+        for (int i = str.length() - 1; i > 0; i--) {
+            System.out.print(str.charAt(i));
+        }
+    }
+
+
+    @Given("I have a {string} to reverse every {int} character")
+    public void iHaveAToReverseEveryCharacter(String str, int num) {
+
+        for (int i = str.length() - 1; i >= 0; i--) {
+            if (i % num == 0){
+                System.out.print(str.charAt(i));
+            }
+        }
+    }
+
+    @Given("I have a {string} to reverse")
+    public void iHaveAToReverse(String str) {
+       String [] result = str.split("[, ?.@]+");
+        for (String a : result) {
+        for (int i = a.length()-1; i >=0; i--) {
+            System.out.print(a.charAt(i) + " ");
+        }
+        }
+    }
+
+    @Given("I have integer {string}")
+    public void iHaveInteger(String num) {
+        String reverse = "";
+        for (int i = num.length()-1; i>=0; i--) {
+            reverse = reverse + num.charAt(i);
+        }
+        if (num.equals(reverse)){
+            System.out.print("true");
+        } else{
+            System.out.print("false");
+        }
     }
 }
+
 

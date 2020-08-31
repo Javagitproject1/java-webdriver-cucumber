@@ -14,12 +14,11 @@ Feature: Marketing test suite
   @market2
   Scenario: Fill in required fields, submit the form and validate the data
     Given I go to "https://skryabin.com/market/quote.html" page
-    When I fill in required fields
-    And I verify email field behavior
-    And I accept agreement with xpath "//*[@id='thirdPartyButton']"
-          #And I dismiss agreement with xpath "//*[@id='thirdPartyButton']"
+    When I fill in required fields for "admin"
+    And I verify email field behavior for "admin"
+    And I "accept" agreement
     Then I submit the page
-    And I verify that fields values are recorded correctly
+    And I verify that fields values are recorded correctly for "admin"
 
 
   @market6
@@ -65,9 +64,9 @@ Feature: Marketing test suite
   @market11
   Scenario: Unit Converter
     Given I open url "https://www.unitconverters.net/"
-    When I click on "Temperature"
-    And I convert from "Celsius" to "Fahrenheit"
-    Then I enter value "30" and verify result
+    When I click on "Length"
+    And I convert from "Mile" to "Kilometer"
+    Then I enter value "50" and verify result is "80.4"
 
   @market12
   Scenario: Verify calculator result
@@ -88,7 +87,7 @@ Feature: Marketing test suite
     And I click "Show Table" on the map
     When I click "Select All" on the table
     And I close modal window
-        #Then I verify that summary of all rows of Cost column is equal Approximate Cost in Order
+    Then I verify that summary of all rows of Cost column is equal Approximate Cost in Order
 
 
 

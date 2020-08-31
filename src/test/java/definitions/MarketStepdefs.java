@@ -4,6 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.assertj.core.data.Percentage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Action;
@@ -20,17 +21,16 @@ import javax.sound.midi.Soundbank;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.io.FileNotFoundException;
 import java.sql.SQLOutput;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.FLOAT;
 import static org.openqa.selenium.Keys.*;
-import static support.TestContext.getDriver;
-import static support.TestContext.initialize;
+import static support.TestContext.*;
 
 public class MarketStepdefs {
     private Object JSpinner;
@@ -66,17 +66,18 @@ public class MarketStepdefs {
         }
     }
 
-    @When("I fill in required fields")
-    public void iFillInRequiredFields() {
+    @When("I fill in required fields for {string}")
+    public void iFillInRequiredFieldsFor(String role) {
+        Map<String,String> user = getData(role);
 
-        getDriver().findElement(By.name("username")).sendKeys("testuser1");
-        getDriver().findElement(By.name("email")).sendKeys("testuser1@example.com");
-        getDriver().findElement(By.name("password")).sendKeys("Qwerty1");
-        getDriver().findElement(By.name("confirmPassword")).sendKeys("Qwerty1");
+        getDriver().findElement(By.name("username")).sendKeys(user.get("username"));
+        getDriver().findElement(By.name("email")).sendKeys(user.get("email"));
+        getDriver().findElement(By.name("password")).sendKeys(user.get("password"));
+        getDriver().findElement(By.name("confirmPassword")).sendKeys(user.get("password"));
         getDriver().findElement(By.id("name")).click();
-        getDriver().findElement(By.name("firstName")).sendKeys("Michael");
-        getDriver().findElement(By.id("middleName")).sendKeys("Andrew");
-        getDriver().findElement(By.name("lastName")).sendKeys("Jordon");
+        getDriver().findElement(By.name("firstName")).sendKeys(user.get("firstname"));
+        getDriver().findElement(By.id("middleName")).sendKeys(user.get("middlename"));
+        getDriver().findElement(By.name("lastName")).sendKeys(user.get("lastname"));
         getDriver().findElement(By.xpath("//*[@type='button']/span[text()='Save']")).click();
         getDriver().findElement(By.xpath("//input[@name='phone']")).sendKeys("6563421231");
         getDriver().findElement(By.xpath("//input[@id='dateOfBirth']")).click();
@@ -92,25 +93,30 @@ public class MarketStepdefs {
 
     }
 
-    @And("I verify email field behavior")
-    public void iVerifyEmailFieldBehavior() {
-
+    @And("I verify email field behavior for {string}")
+    public void iVerifyEmailFieldBehaviorFor(String role) {
+        Map <String, String> user = getData(role);
         getDriver().findElement(By.xpath("//input[@name='email']")).clear();
         getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("testuser1");
         getDriver().findElement(By.xpath("//input[@name='password']")).click();
         getDriver().findElement(By.xpath("//*[text ()= 'Please enter a valid email address.']")).isDisplayed();
         getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(BACK_SPACE);
         getDriver().findElement(By.xpath("//input[@name='email']")).clear();
-        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys("testuser1@example.com");
+        getDriver().findElement(By.xpath("//input[@name='email']")).sendKeys(user.get("email"));
 
     }
 
-    @And("I accept agreement with xpath {string}")
-    public void iAcceptAgreementWithXpath(String str) {
+    @And("I {string} agreement")
+    public void iAgreement(String alertAction) {
 
-        getDriver().findElement(By.xpath(str)).click();
-        getDriver().switchTo().alert().accept();
-
+        getDriver().findElement(By.xpath("//*[@id='thirdPartyButton']")).click();
+        if (alertAction.equals("accept")) {
+            getDriver().switchTo().alert().accept();
+        } else if (alertAction.equals("dismiss")) {
+            getDriver().switchTo().alert().dismiss();
+        } else {
+            throw new RuntimeException("Incorrect action:" + alertAction);
+        }
     }
 
     @And("I dismiss agreement with xpath {string}")
@@ -122,34 +128,37 @@ public class MarketStepdefs {
 
     @Then("I submit the page")
     public void iSubmitThePage() {
-
         getDriver().findElement(By.id("formSubmit")).click();
     }
 
 
-    @And("I verify that fields values are recorded correctly")
-    public void iVerifyThatFieldsValuesAreRecordedCorrectly() {
+    @And("I verify that fields values are recorded correctly for {string}")
+    public void iVerifyThatFieldsValuesAreRecordedCorrectlyFor (String role) {
+
+        Map <String, String> user = getData(role);
 
         assertThat(getDriver().findElement(By.xpath("//legend[@class='applicationResult']")).isDisplayed());
         assertThat(getDriver().findElement(By.xpath("//b[@name='dateOfBirth']")).getText()).isEqualTo("08/07/1980");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='firstName']")).getText()).isEqualTo("Michael");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='firstName']")).getText()).isEqualTo(user.get("firstname"));
         assertThat(getDriver().findElement(By.xpath("//b[@name='phone']")).getText()).isEqualTo("6563421231");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='username']")).getText()).isEqualTo("testuser1");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='middleName']")).getText()).isEqualTo("Andrew");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='username']")).getText()).isEqualTo(user.get("username"));
+        assertThat(getDriver().findElement(By.xpath("//b[@name='middleName']")).getText()).isEqualTo(user.get("middlename"));
         assertThat(getDriver().findElement(By.xpath("//b[@name='address']")).getText()).isEqualTo("767 5th Ave New York, NY, 10153, United States");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='email']")).getText()).isEqualTo("testuser1@example.com");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='lastName']")).getText()).isEqualTo("Jordon");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='email']")).getText()).isEqualTo(user.get("email"));
+        assertThat(getDriver().findElement(By.xpath("//b[@name='lastName']")).getText()).isEqualTo(user.get("lastname"));
         assertThat(getDriver().findElement(By.xpath("//b[@name='carMake']")).getText()).isEqualTo("BMW");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='password']")).getText()).isNotEqualTo("Qwerty1");
-        assertThat(getDriver().findElement(By.xpath("//b[@name='name']")).getText()).isEqualTo("Michael Andrew Jordon");
+        assertThat(getDriver().findElement(By.xpath("//b[@name='password']")).getText()).isNotEqualTo(user.get("password"));
+        assertThat(getDriver().findElement(By.xpath("//b[@name='name']")).getText()).isEqualTo(user.get("firstname") + " " + user.get("middlename") + " " + user.get("lastname"));
         assertThat(getDriver().findElement(By.xpath("//b[@name='agreedToPrivacyPolicy']")).getText()).isEqualTo("true");
         assertThat(getDriver().findElement(By.xpath("//b[@name='thirdPartyAgreement']")).getText()).isEqualTo("accepted");
 
+        WebElement page = getDriver().findElement(By.xpath("//div[@id='quotePageResult']"));
+        String quotePage = page.getText();
+        System.out.println(quotePage);
     }
 
     @And("I print logs to console")
     public void iPrintLogsToConsole() {
-
         getDriver().manage().logs().get("browser");
     }
 
@@ -259,6 +268,11 @@ public class MarketStepdefs {
         WebElement spinner = getDriver().findElement(By.xpath("//div[@class='white-spinner-container']"));
         wait.until(ExpectedConditions.invisibilityOf(spinner));
         assertThat(getDriver().findElement(By.xpath("//span [@ID='searchResultsHeading']")).getText()).contains(str + " results found for ");
+
+        int expectedSize = Integer.parseInt(str);
+        List<WebElement> results = getDriver().findElements(By.xpath("//div[@id='main_res']//li"));
+        int actualSize = results.size();
+        assertThat(actualSize).isEqualTo(expectedSize);
     }
 
     @When("I select {string} in results")
@@ -275,12 +289,11 @@ public class MarketStepdefs {
 
         getDriver().findElement(By.xpath("//a[@target='_blank'] [contains(text(),'" + str + "')]")).click();
 
-        String currentWindowHandle = getDriver().getWindowHandle();
+        String firstWindow = getDriver().getWindowHandle();
         for (String handle : getDriver().getWindowHandles()) {
-            if (!currentWindowHandle.equals(handle)) {
-                getDriver().switchTo().window(handle);
-            }
+            getDriver().switchTo().window(handle);
         }
+        // getDriver().getWindowHandles().forEach(windowRotation -> getDriver().switchTo().window(windowRotation));
     }
 
     @Then("I validate that Sign In is required")
@@ -297,10 +310,8 @@ public class MarketStepdefs {
     public void iGoToTab(String str) {
 
         getDriver().findElement(By.xpath("//a [@class='menuitem'][text()='" + str + "']")).click();
-
-        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
         WebElement results = getDriver().findElement(By.xpath("//div[@class='spinner']"));
-        wait.until(ExpectedConditions.invisibilityOfAllElements(results));
+        getWait().until((ExpectedConditions.invisibilityOfAllElements(results)));
     }
 
     @And("I perform {string} help search")
@@ -378,16 +389,16 @@ public class MarketStepdefs {
     @Then("I verify phone number is {string}")
     public void iVerifyPhoneNumberIs(String str1) {
 
-        WebDriverWait wait = new WebDriverWait(getDriver(), 5);
+        //WebDriverWait wait = new WebDriverWait(getDriver(), 5);
         WebElement results = getDriver().findElement(By.id("resultBox"));
-        wait.until(ExpectedConditions.visibilityOfAllElements(results));
+        getWait().until(ExpectedConditions.visibilityOfAllElements(results));
 
         getDriver().findElement(By.xpath("//div [@id='resultBox']/div [@class='list-item-location popover-trigger'] [1]")).click();
         assertThat(getDriver().findElement(By.xpath("//div [@id='po-location-detail']")).getText()).contains(str1);
     }
 
     @When("I click on {string}")
-    public void iClickOn(String unit)  {
+    public void iClickOn(String unit) {
         switch (unit) {
             case "Length":
                 getDriver().findElement(By.xpath("//div[@id='menu']//*[contains(text (),'Length')]")).click();
@@ -414,7 +425,7 @@ public class MarketStepdefs {
     }
 
     @And("I convert from {string} to {string}")
-    public void iConvertFromTo(String unitfrom, String unitto)  {
+    public void iConvertFromTo(String unitfrom, String unitto) {
         Select from = new Select(getDriver().findElement(By.xpath("//select[@id='calFrom']")));
         from.selectByVisibleText(unitfrom);
 
@@ -423,23 +434,22 @@ public class MarketStepdefs {
 
     }
 
-    @Then("I enter value {string} and verify result")
-    public void iEnterValueAndVerifyResult(String value)  {
-        getDriver().findElement(By.xpath("//input [@name='fromVal']")).sendKeys(value);
-        WebElement result = getDriver().findElement(By.xpath("//div [@id='calResults']"));
-        assertThat(result.isDisplayed());
-        System.out.println(result.getText());
+    @Then("I enter value {string} and verify result is {string}")
+    public void iEnterValueAndVerifyResult(String input, String output) {
+        getDriver().findElement(By.xpath("//input [@name='fromVal']")).sendKeys(input);
+        String result = getDriver().findElement(By.xpath("//div [@id='calResults']")).getText();
+        assertThat(result).contains(output);
     }
 
     @When("I navigate to {string}")
     public void iNavigateTo(String str) {
-        Actions navigate = new Actions(getDriver());
-        navigate.moveToElement(getDriver().findElement(By.xpath("//div [@id='homelistdiv']//*[contains(text(), '" + str + "')]"))).click().perform();
+        //Actions navigate = new Actions(getDriver());
+        getActions().moveToElement(getDriver().findElement(By.xpath("//div [@id='homelistdiv']//*[contains(text(), '" + str + "')]"))).click().perform();
 
     }
 
     @And("I clear all calculator fields")
-    public void iClearAllCalculatorFields()  {
+    public void iClearAllCalculatorFields() {
         getDriver().findElement(By.xpath("//input[@id='cloanamount']")).clear();
         getDriver().findElement(By.xpath("//input[@id='cloanterm']")).clear();
         getDriver().findElement(By.xpath("//input[@id='cinterestrate']")).clear();
@@ -482,51 +492,83 @@ public class MarketStepdefs {
 
     @When("I go to {string} under {string}")
     public void iGoToUnder(String option, String menu) {
-        Actions navigate = new Actions(getDriver());
-        navigate.moveToElement(getDriver().findElement(By.xpath("//a[@href= 'https://www.usps.com/business/']"))).perform();
+
+        getActions().moveToElement(getDriver().findElement(By.xpath("//a[@href= 'https://www.usps.com/business/']"))).perform();
         getDriver().findElement(By.xpath("//a[@href= 'https://eddm.usps.com/eddm/customer/routeSearch.action']")).click();
 
         WebDriverWait wait = new WebDriverWait(getDriver(), 25);
-        //WebElement eddm = getDriver().findElement(By.xpath("//h1[text()=' Every Door Direct Mail']"));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()=' Every Door Direct Mail']")));
     }
 
     @And("I search for {string}")
-    public void iSearchFor(String text) throws InterruptedException {
+    public void iSearchFor(String text) {
 
         getDriver().findElement(By.xpath("//*[@id='address']")).sendKeys(text);
         getDriver().findElement(By.xpath("//*[@id='address']")).sendKeys(ENTER);
 
-        Thread.sleep(10000);
-//        WebDriverWait wait = new WebDriverWait(getDriver(),10);
-//        getDriver().switchTo().frame("");
-//        WebElement progressbar = getDriver().findElement(By.xpath("//div[@id='USPS.EDDM.mapPane']"));
-//        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("eddm_overlay-progress")));
-//        //wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("eddm_overlay-progress']")));
+        WebDriverWait wait1 = new WebDriverWait(getDriver(), 15);
+        WebElement button = getDriver().findElement(By.xpath("//a[contains (text(),'Show Table')]"));
+        wait1.until(ExpectedConditions.visibilityOf(button));
+        WebDriverWait wait = new WebDriverWait(getDriver(), 25);
+        WebElement progressbar = getDriver().findElement(By.id("eddm_overlay-progress"));
+        wait.until(ExpectedConditions.invisibilityOf(progressbar));
     }
 
     @And("I click {string} on the map")
-    public void iClickOnTheMap(String button) {
-        getDriver().findElement(By.xpath("//a[contains (text(),'" + button + "')]")).click();
+    public void iClickOnTheMap(String button)  {
+
+        getDriver().findElement(By.xpath("//span[@class='toggle-icon']")).click();
+
     }
 
     @When("I click {string} on the table")
     public void iClickOnTheTable(String button) {
 
-        Actions select = new Actions(getDriver());
-        select.moveToElement(getDriver().findElement(By.xpath("//a[@class='totalsArea'][contains(text(),'Select All')]"))).click().perform();
-        //getDriver().findElement(By.xpath("//a[@class='totalsArea'][contains(text(),'Select All')]")).click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), 10);
+        WebElement totalButton = getDriver().findElement(By.xpath("//a[@class='totalsArea'][contains(text(),'Select All')]"));
+        wait.until(driver -> totalButton.isDisplayed());
+
+        //wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='totalsArea'][contains(text(),'Select All')]")));
+
+        getDriver().findElement(By.xpath("//a[@class='totalsArea'][contains(text(),'Select All')]")).click();
     }
 
     @And("I close modal window")
     public void iCloseModalWindow() {
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), 10);
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='modal-box-closeModal']")));
         getDriver().switchTo().activeElement();
         getDriver().findElement(By.xpath("//div[@id='modal-box-closeModal']")).click();
+
     }
 
     @Then("I verify that summary of all rows of Cost column is equal Approximate Cost in Order")
-    public void iVerifyThatSummaryOfAllRowsOfCostColumnIsEqualApproximateCostInOrder() {
+    public void iVerifyThatSummaryOfAllRowsOfCostColumnIsEqualApproximateCostInOrder() throws InterruptedException {
 
+        WebElement tableBox = getDriver().findElement(By.xpath("//div[@class='dojoxGridScrollbox']"));
 
+        //JavascriptExecutor executor = (JavascriptExecutor) getDriver();
+        getExecutor().executeScript("arguments[0].scrollBy(0, 800);", tableBox);
+
+        Thread.sleep(500);
+
+        List<WebElement> cost = getDriver().findElements(By.xpath("//div[@class='dojoxGridContent']/div/div/table//*[@idx='7']"));
+
+        float sum = 0;
+        for (WebElement price : cost) {
+            String save = price.getText();
+            String replace = save.replace("$", "");
+            float number = Float.valueOf(replace);
+            sum = sum + number;
+        }
+
+        WebElement approxCost = getDriver().findElement(By.xpath("//span[@class='approx-cost']"));
+        String approx = approxCost.getText();
+        String replace1 = approx.replace("$", "");
+        float costNumber = Float.valueOf(replace1);
+
+        //assertThat(costNumber).isEqualTo(sum);
+        assertThat(costNumber).isCloseTo(sum, Percentage.withPercentage(5));
     }
 }

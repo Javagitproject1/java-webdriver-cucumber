@@ -1,0 +1,13 @@
+username: johndoe
+firstname: John
+middlename: Alexander
+lastname: Doe
+email: user@example.com
+password: "user1"
+phone: "5556667788"
+address: 870 7th Ave
+zip: "10019"
+city: New York
+state: New York
+shortstate: NY
+
