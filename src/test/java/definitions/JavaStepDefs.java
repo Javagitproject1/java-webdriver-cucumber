@@ -336,80 +336,48 @@ public class JavaStepDefs {
         }
     }
 
-    @Given("I have coding tasks")
-    public void iHaveCodingTasks() {
+    @Given("I check if array is empty")
+    public void iCheckIfArrayIsEmpty() {
+        int[] myArr = {1, 2, 5, 6};
+        int[] nullArr = null;
+        System.out.println(isArrayEmpty(myArr));
+    }
 
-        System.out.println("1. Write a function that checks if array is empty");
-        List<String> array = Arrays.asList("");
-        for (String emptyarray : array) {
-            if (emptyarray.isEmpty()) {
-                System.out.println("Array is empty");
-            } else if (emptyarray.equals(null)) {
-                System.out.println("Array is null");
-            } else {
-                System.out.println("Array is not empty ");
-            }
-        }
-        System.out.println("");
-        System.out.println("2. Write a function that prints all integer array");
-        int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    boolean isArrayEmpty(int[] myArr) {
 
-        for (int array1 : numbers) {
-            System.out.print(array1 + " ");
-        }
-
-        System.out.println("");
-        System.out.println("");
-        System.out.println("3. Write a function that prints all even numbers from integer array");
-        for (int j = 0; j <= numbers.length; j++) {
-            if (j % 2 == 0) {
-                System.out.print(j + " ");
-            }
-        }
-        System.out.println("");
-        System.out.println("");
-        System.out.println("4. Write a function that checks if array contains another element");
-        List<String> fruits = Arrays.asList("apples", "bananas", "mangoes");
-        if (fruits.size() > 1) {
-            System.out.println("array contains another element");
+        if (myArr.length == 0 || myArr == null) {
+            return true;
         } else {
-            System.out.println("there is only 1 element in the array");
+            return false;
         }
+    }
 
+    @Given("I have number to check {int}")
+    public void iHaveNumberToCheck(int num) {
 
-        System.out.println("");
-        System.out.println("5. Write a function that prints all numbers from 0 to n");
-        int n = 10;
-        for (int i = 0; i < n; i++) {
-            System.out.print(i + 1 + " ");
+        System.out.println(iHaveNumbers(num));
+    }
+
+    boolean iHaveNumbers(int num) {
+        System.out.println("Is this integer" + " " + num + " " + "positive?");
+        if (num > 0) {
+            return true;
         }
+        return false;
+    }
 
-        System.out.println("");
-        System.out.println("");
-        System.out.println("6. Write a function that supports negative numbers");
-        List<Integer> negative = Arrays.asList(-1, -2, -3, -6, 0, 5, 2, 4, 6, -15);
-        for (int i : negative) {
-            if (i < 0) {
-                System.out.print(i + " ");
-            }
+    @Given("I have integer {int}")
+    public void iHaveInteger(int num1) {
+
+        for (int i = 0; i <= num1; i++) {
+            System.out.print(i + " ");
         }
-        System.out.println("");
-        System.out.println("");
-        System.out.println("7. Write a function that checks if number is positive or not");
-        int num = 10;
-        if (num < 0) {
-            System.out.println(num + " " + "number is negative");
-        } else if (num > 0) {
-            System.out.println(num + " " + "number is positive");
-        } else {
-            System.out.println("number equals to 0");
-        }
+    }
 
-        System.out.println("");
+    @Given("I have integer argument")
+    public void iHaveIntegerArgument() {
 
-        System.out.println("8. Write a function that accepts integer argument");
-
-        int max = 16;
+        int max = 20;
         for (int i = 1; i <= max; i++) {
             if (i % 3 == 0 && i % 5 == 0) {
                 System.out.print("FizzBuzz ");
@@ -421,50 +389,121 @@ public class JavaStepDefs {
                 System.out.print(i + " ");
             }
         }
-        System.out.println("");
+    }
+
+    @Given("I have array to print even numbers")
+    public void iHaveArrayToPrintEvenNumbers() {
+        int[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        for (int j = 0; j <= numbers.length; j++) {
+            if (j % 2 == 0) {
+                System.out.print(j + " ");
+            }
+        }
+    }
+
+    @Given("I have array to check for another element")
+    public void iHaveArrayToCheckForAnotherElement() {
+
+        Integer[] numArr = {1, 5, 6, 7, 3, 4};
+        int anotherElement = 7;
+        System.out.println(isArrayHasElement(numArr, anotherElement));
+    }
+
+    boolean isArrayHasElement(Object[] numArr, Object anotherElement) {
+        for (int i = 0; i < numArr.length; i++) {
+            if (numArr[i].equals(anotherElement)){
+                return true;
+            }
+        }
+        return false;
+
     }
 
     @Given("I have a function to reverses a {string}")
     public void iHaveAFunctionToReversesA(String str) {
-        System.out.println("Original string:"+ str);
+        System.out.println("Original string:" + str);
         for (int i = str.length() - 1; i > 0; i--) {
             System.out.print(str.charAt(i));
         }
     }
 
-
     @Given("I have a {string} to reverse every {int} character")
     public void iHaveAToReverseEveryCharacter(String str, int num) {
 
         for (int i = str.length() - 1; i >= 0; i--) {
-            if (i % num == 0){
+            if (i % num == 0) {
                 System.out.print(str.charAt(i));
             }
         }
     }
 
-    @Given("I have a {string} to reverse")
-    public void iHaveAToReverse(String str) {
-       String [] result = str.split("[, ?.@]+");
-        for (String a : result) {
-        for (int i = a.length()-1; i >=0; i--) {
-            System.out.print(a.charAt(i) + " ");
+    @Given("I have a string {string} to reverse")
+    public void iHaveAStringToReverse(String str) {
+        String[] text;
+        for (int i = str.length() - 1; i >= 0; i--) {
+            System.out.println(str.charAt(i));
+            text = str.split("\\w");
+
         }
-        }
+
     }
 
-    @Given("I have integer {string}")
-    public void iHaveInteger(String num) {
+    @Given("I have a string {string}")
+    public void iHaveAString(String num) {
         String reverse = "";
-        for (int i = num.length()-1; i>=0; i--) {
+        for (int i = num.length() - 1; i >= 0; i--) {
             reverse = reverse + num.charAt(i);
         }
-        if (num.equals(reverse)){
+        if (num.equalsIgnoreCase(reverse)) {
             System.out.print("true");
-        } else{
+        } else {
             System.out.print("false");
         }
     }
+
+    @Given("I have array with duplicates")
+    public void iHaveArrayWithDuplicates() {
+
+        int[] myArray = {11, 22, 41, 22, 44};
+
+        for (int i = 0; i < myArray.length; i++) {
+            for (int j = i + 1; j < myArray.length; j++) {
+                if (myArray[j] == myArray[i]) {
+                    int dupe = myArray[i];
+                    System.out.println("Dupe element found in the array:" + dupe);
+                }
+            }
+        }
+    }
+
+    @Given("I have array with max numbers")
+    public void iHaveArrayWithMaxNumbers() {
+        int[] myArr = {100, 81, 77, 150};
+        int max1 = myArr[0];
+        int max2 = myArr[0];
+        for (int i = 0; i < myArr.length; i++) {
+            if (max1 < myArr[i]) {
+                max1 = myArr[i];
+            }
+            for (int j = i + 1; j < myArr.length; j++) {
+                if (max2 < myArr[j] && max2 < max1) {
+                    max2 = myArr[j];
+                }
+            }
+        }
+
+        System.out.println("First maximum integer in array:" + max1);
+        System.out.println("Second maximum integer in array:" + max2);
+    }
+
+    @Given("I have a string {string}to count characters")
+    public void iHaveAStringToCountCharacters(String text) {
+        String[] newtext = text.split("hello", 1);
+
+        for (int i = 0; i < newtext.length; i++) {
+            String a = newtext[i];
+            System.out.println(a);
+        }
+    }
+
 }
-
-

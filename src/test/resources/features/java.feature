@@ -70,24 +70,61 @@ Feature: My First Java Feature
       Given I have entered number 12
 
     @java17
-    Scenario: Coding Challenges
-      Given I have coding tasks
+    Scenario: Write a function that checks if array is empty
+      Given I check if array is empty
 
     @java18
+    Scenario: Write a function that prints all even numbers from integer array
+      Given I have array to print even numbers
+
+    @java19
+    Scenario: Write a function that checks if array contains another element
+      Given I have array to check for another element
+
+    @java20
+    Scenario: Write a function that checks if number is positive or not
+      Given I have number to check 10
+
+    @java21
+    Scenario: Write a function that prints all numbers from 0 to n
+      Given I have integer 15
+
+
+    @java22
+    Scenario: Write a function that accepts integer argument. (FizzBuzz)
+      Given I have integer argument
+
+    @java23
     Scenario: Coding Challenge
       Given I have a function to reverses a "HelloWorldAgain!"
 
-    @java19
+    @java24
     Scenario: Reverse every 3d character of a string
       Given I have a "WebDriver" to reverse every 3 character
 
-    @java20
+    @java25
     Scenario: Reverse sentence
-      Given I have a "I am an Automation Engineer" to reverse
+      Given I have a string "I am Automation Engineer" to reverse
 
-    @java21
-    Scenario: Determine whether integer is a palindrome
-      Given I have integer "121"
+    @java26
+    Scenario: Write a function that finds if word is palindrome
+      Given I have a string "Anna"
+
+    @java27
+    Scenario: Write a function that finds if array contains duplicates
+      Given I have array with duplicates
+
+    @java28
+    Scenario: Write a function that find 2 max numbers in an array
+      Given I have array with max numbers
+
+    @java29
+    Scenario: Write a function that counts number of each character in a string
+      Given I have a string "string "to count characters
+
+
+
+
 
 
         

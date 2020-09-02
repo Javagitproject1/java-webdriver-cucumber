@@ -2,13 +2,20 @@
 Feature: Marketing test suite
 
   @market1
-  Scenario: getDriver exercise
-    Given I go to "https:www.google.com" page
+  Scenario Outline: getDriver exercise
+    Given I go to "<Page1>" page
     And I print page details
-    And I go to "https:www.yahoo.com" page
+    And I go to "<Page2>" page
     And I go back and forward, then refresh the page
-    And I change resolution to "desktop"
-    And I print logs to console
+    And I change resolution to "<Size1>"
+    And I change resolution to "<Size2>"
+    Then I print logs to console
+
+    Examples:
+      | Page1                 | Page2                  | Size1   | Size2   |
+      | https:www.google.com  | https:www.yahoo.com    | iphone  | desktop |
+      | https:www.yahoo.com   | https://duckduckgo.com | desktop | ipad    |
+      | https://www.bing.com/ | https://yandex.com/    | iphone  | ipad    |
 
 
   @market2
@@ -62,11 +69,17 @@ Feature: Marketing test suite
     Then I verify phone number is "800-275-8777"
 
   @market11
-  Scenario: Unit Converter
+  Scenario Outline: Unit Converter
     Given I open url "https://www.unitconverters.net/"
-    When I click on "Length"
-    And I convert from "Mile" to "Kilometer"
-    Then I enter value "50" and verify result is "80.4"
+    When I click on "<Unit>"
+    And I convert from "<From>" to "<To>"
+    Then I enter value "<Value Original>" and verify result is "<Value Converted>"
+    Examples:
+      | Unit        | From       | To        | Value Original | Value Converted |
+      | Length      | Mile       | Kilometer | 50             | 80.4675         |
+      | Temperature | Fahrenheit | Celsius   | 54             | 12.2            |
+      | Weight      | Pound      | Kilogram  | 170            | 77              |
+
 
   @market12
   Scenario: Verify calculator result

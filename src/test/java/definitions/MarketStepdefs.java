@@ -57,10 +57,12 @@ public class MarketStepdefs {
 
     @And("I change resolution to {string}")
     public void iChangeResolutionTo(String res) {
-        if (res.equals("phone")) {
-            getDriver().manage().window().setSize(new Dimension(400, 800));
+        if (res.equals("ipad")) {
+            getDriver().manage().window().setSize(new Dimension(768, 1024));
         } else if (res.equals("desktop")) {
-            getDriver().manage().window().setSize(new Dimension(1024, 768));
+            getDriver().manage().window().setSize(new Dimension(2560, 1600));
+        } else if (res.equals("iphone")) {
+            getDriver().manage().window().setSize(new Dimension(320, 568));
         } else {
             getDriver().manage().window().maximize();
         }

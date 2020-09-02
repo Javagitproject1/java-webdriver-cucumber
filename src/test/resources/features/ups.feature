@@ -28,7 +28,7 @@ Feature: UPS test suit
     And I select cheapest delivery option
     And I submit the shipment form
     And I set description "Books" and check Saturday Delivery type
-#      Then I verify total charges changed
+    Then I verify total charges changed
     When I submit the shipment form
     And I select Paypal payment type
     And I submit the shipment form

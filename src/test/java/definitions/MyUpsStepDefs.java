@@ -45,7 +45,7 @@ public class MyUpsStepDefs {
     }
 
     @And("I go to Create a Shipment")
-    public void iGoToCreateAShipment()  {
+    public void iGoToCreateAShipment() {
         getDriver().findElement(By.xpath("//a[@class='ups-analytics'][contains(text(),'Create a Shipment:')]")).click();
 
     }
@@ -82,7 +82,7 @@ public class MyUpsStepDefs {
     }
 
     @Then("I verify origin shipment fields submitted according to {string}")
-    public void iVerifyOriginShipmentFieldsSubmittedAccordingTo(String verifyData)  {
+    public void iVerifyOriginShipmentFieldsSubmittedAccordingTo(String verifyData) {
         getWait(5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class,'ups-section_heading ups-centered_header')]")));
 
         Map<String, String> form = getData(verifyData);
@@ -99,7 +99,7 @@ public class MyUpsStepDefs {
     }
 
     @And("I cancel the shipment form")
-    public void iCancelTheShipmentForm()  {
+    public void iCancelTheShipmentForm() {
         WebElement cancel = getDriver().findElement(By.xpath("//button[text()='Cancel Shipment']"));
         getExecutor().executeScript("arguments[0].click();", cancel);
         getDriver().switchTo().activeElement();
@@ -121,7 +121,7 @@ public class MyUpsStepDefs {
     }
 
     @When("I fill out destination shipment fields from {string}")
-    public void iFillOutDestinationShipmentFieldsFrom(String user)  {
+    public void iFillOutDestinationShipmentFieldsFrom(String user) {
 
         Map<String, String> userData = getData(user);
         getDriver().findElement(By.xpath("//input[@id='destinationname']")).sendKeys(userData.get("firstname") + " " + userData.get("lastname"));
@@ -138,7 +138,7 @@ public class MyUpsStepDefs {
     }
 
     @Then("I set packaging type {string} and weight {string}")
-    public void iSetPackagingTypeAndWeight(String type, String weight)  {
+    public void iSetPackagingTypeAndWeight(String type, String weight) {
 
         getWait(5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='nbsPackagePackageLengthField0']")));
         //getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input [@id='nbsPackagePackageWeightField0']")));
@@ -165,7 +165,7 @@ public class MyUpsStepDefs {
     }
 
     @And("I select cheapest delivery option")
-    public void iSelectCheapestDeliveryOption()  {
+    public void iSelectCheapestDeliveryOption() {
 
         WebElement cheapest = getDriver().findElement(By.xpath("//input[@id='nbsServiceTileServiceRadio7']"));
         getExecutor().executeScript("arguments[0].click();", cheapest);
@@ -173,7 +173,7 @@ public class MyUpsStepDefs {
     }
 
     @And("I set description {string} and check Saturday Delivery type")
-    public void iSetDescriptionAndCheckSaturdayDeliveryType(String description)  {
+    public void iSetDescriptionAndCheckSaturdayDeliveryType(String description) {
 
         getWait(5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class,'ups-section_heading ups-centered_header')]")));
 
@@ -182,25 +182,36 @@ public class MyUpsStepDefs {
 
         WebElement deliveryOption = getDriver().findElement(By.xpath("//input[contains (@id, 'SaturdayDelivery')]"));
         getExecutor().executeScript("arguments[0].click();", deliveryOption);
+
+
     }
 
+
     @Then("I verify total charges changed")
-    public void iVerifyTotalChargesChanged() throws InterruptedException {
-        String totalBefore = getDriver().findElement(By.xpath("//span[@id='total-charges-spinner']")).getText();
-        float before = 0;
-        String replace = totalBefore.replace("$", "");
-        float number = Float.valueOf(replace);
-        System.out.println(totalBefore);
+    public void iVerifyTotalChargesChanged() {
 
-        Thread.sleep(2000);
+        WebElement deliveryOptionUnClick = getDriver().findElement(By.xpath("//input[contains (@id, 'SaturdayDelivery')]"));
+        getExecutor().executeScript("arguments[0].click();", deliveryOptionUnClick);
 
-        String totalAfter = getDriver().findElement(By.xpath("//span[@id='total-charges-spinner']")).getText();
-        float after = 0;
-        String replace1 = totalAfter.replace("$", "");
-        float number1 = Float.valueOf(replace1);
-        System.out.println(totalAfter);
+        getWait(3).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//img[contains(@src, 'ajax-loader')]")));
 
-        assertThat(totalBefore.equals(totalAfter));
+        WebElement totalBefore = getDriver().findElement(By.xpath("//span[@id='total-charges-spinner']"));
+        String saveNum1 = totalBefore.getText();
+        String replace = saveNum1.replace("$", "");
+        float number = Float.parseFloat(replace);
+
+
+        WebElement deliveryOptionClick = getDriver().findElement(By.xpath("//input[contains (@id, 'SaturdayDelivery')]"));
+        getExecutor().executeScript("arguments[0].click();", deliveryOptionClick);
+
+        getWait(3).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//img[contains(@src, 'ajax-loader')]")));
+
+        WebElement totalAfter = getDriver().findElement(By.xpath("//span[@id='total-charges-spinner']"));
+        String saveNum2 = totalAfter.getText();
+        String replace1 = saveNum2.replace("$", "");
+        float number1 = Float.parseFloat(replace1);
+
+        assertThat(number1).isNotEqualTo(number);
 
     }
 
