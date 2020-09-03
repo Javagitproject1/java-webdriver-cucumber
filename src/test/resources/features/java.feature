@@ -104,7 +104,7 @@ Feature: My First Java Feature
 
     @java25
     Scenario: Reverse sentence
-      Given I have a string "I am Automation Engineer" to reverse
+#      Given I have a string "I am Automation Engineer" to reverse
 
     @java26
     Scenario: Write a function that finds if word is palindrome
@@ -120,7 +120,11 @@ Feature: My First Java Feature
 
     @java29
     Scenario: Write a function that counts number of each character in a string
-      Given I have a string "string "to count characters
+#      Given I have a string "string "to count characters
+
+  @java 30
+      Scenario: User inputs two numbers which are divided by 5.
+        Given I have integer 4 and integer 19
 
 
 

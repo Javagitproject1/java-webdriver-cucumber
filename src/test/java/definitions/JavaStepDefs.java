@@ -411,7 +411,7 @@ public class JavaStepDefs {
 
     boolean isArrayHasElement(Object[] numArr, Object anotherElement) {
         for (int i = 0; i < numArr.length; i++) {
-            if (numArr[i].equals(anotherElement)){
+            if (numArr[i].equals(anotherElement)) {
                 return true;
             }
         }
@@ -506,4 +506,27 @@ public class JavaStepDefs {
         }
     }
 
+    @Given("I have integer {int} and integer {int}")
+    public void iHaveIntegerAndInteger(int num1, int num2) {
+
+        if (num1 % 5 == 0 && num1 <= 10 && num1 > 0) {
+            System.out.println(num1 + " " + "is within the range of 0 to 10");
+        } else if (num1 % 5 != 0 && num1 <= 10 && num1 > 0) {
+            System.out.println(num1 + " " + "not divisible by 5");
+        } else if (num1 > 10 && num1 % 5 == 0 && num1 > 10) {
+            System.out.println(num1 + " " + "is out of range of 0 to 10");
+        } else if (num1 > 20 && num1 % 5 != 0) {
+            System.out.println(num1 + " " + "is not divisible by 5 and number is out of the range 0 to 20");
+        }
+
+        if (num2 % 5 == 0 && num2 > 10 && num2 <= 20) {
+            System.out.println(num2 + " " + "is within the range of 10 to 20");
+        } else if (num2 % 5 != 0 && num2 > 10 && num2 <= 20) {
+            System.out.println(num2 + " " + "not divisible by 5");
+        } else if (num2 > 20 && num2 % 5 == 0) {
+            System.out.println(num2 + " " + "is out of range of 10 to 20");
+        } else if (num2 > 20 && num2 % 5 != 0) {
+            System.out.println(num2 + " " + "is not divisible by 5 and number is out of the range 10 to 20");
+        }
+    }
 }
