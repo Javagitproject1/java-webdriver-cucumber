@@ -439,13 +439,11 @@ public class JavaStepDefs {
 
     @Given("I have a string {string} to reverse")
     public void iHaveAStringToReverse(String str) {
-        String[] text;
-        for (int i = str.length() - 1; i >= 0; i--) {
-            System.out.println(str.charAt(i));
-            text = str.split("\\w");
+        String[] words = str.split(" ", 0);
 
+        for (int i = words.length - 1; i >= 0; i--) {
+            System.out.print(words[i] + " ");
         }
-
     }
 
     @Given("I have a string {string}")

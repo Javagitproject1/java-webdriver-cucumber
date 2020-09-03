@@ -28,6 +28,7 @@ import java.sql.Time;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.FLOAT;
@@ -139,6 +140,13 @@ public class MyUpsStepDefs {
 
     @Then("I set packaging type {string} and weight {string}")
     public void iSetPackagingTypeAndWeight(String type, String weight) {
+
+
+        getWait(2).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='shipByWeight shippingBox']/div/span[@class='simpleRadioOuter']")));
+
+        WebElement shipping = getDriver().findElement(By.xpath("//div[@class='shipByWeight shippingBox']/div/span[@class='simpleRadioOuter']"));
+        getExecutor().executeScript("arguments[0].click();", shipping);
+
 
         getWait(5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='nbsPackagePackageLengthField0']")));
         //getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input [@id='nbsPackagePackageWeightField0']")));

@@ -104,7 +104,7 @@ Feature: My First Java Feature
 
     @java25
     Scenario: Reverse sentence
-#      Given I have a string "I am Automation Engineer" to reverse
+     Given I have a string "I am Automation Engineer" to reverse
 
     @java26
     Scenario: Write a function that finds if word is palindrome
