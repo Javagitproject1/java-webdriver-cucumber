@@ -141,16 +141,14 @@ public class MyUpsStepDefs {
     @Then("I set packaging type {string} and weight {string}")
     public void iSetPackagingTypeAndWeight(String type, String weight) {
 
+//        getWait(5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class,'ups-section_heading ups-centered_header')]")));
+//       getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='shipByWeight shippingBox']/div/span[@class='simpleRadioOuter']")));
 
-        getWait(2).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='shipByWeight shippingBox']/div/span[@class='simpleRadioOuter']")));
-
-        WebElement shipping = getDriver().findElement(By.xpath("//div[@class='shipByWeight shippingBox']/div/span[@class='simpleRadioOuter']"));
-        getExecutor().executeScript("arguments[0].click();", shipping);
+//       WebElement shipping = getDriver().findElement(By.xpath("//div[@class='shipByWeight shippingBox']/div/span[@class='simpleRadioOuter']"));
+//       getExecutor().executeScript("arguments[0].click();", shipping);
 
 
         getWait(5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='nbsPackagePackageLengthField0']")));
-        //getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input [@id='nbsPackagePackageWeightField0']")));
-
 
         Select option = new Select(getDriver().findElement(By.xpath("//select[@name='nbsPackagePackagingTypeDropdown0']")));
         option.selectByVisibleText(type);
@@ -158,6 +156,13 @@ public class MyUpsStepDefs {
         WebElement weightField = getDriver().findElement(By.xpath("//input [@id='nbsPackagePackageWeightField0']"));
         getActions().moveToElement(weightField).click().perform();
         getActions().moveToElement(weightField).sendKeys(weight).perform();
+
+//        getDriver().findElement(By.xpath("//input [@id='nbsPackagePackageWeightField0']")).click();
+//        getWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//input [@id='nbsPackagePackageWeightField0']")));
+//
+//        getDriver().findElement(By.xpath("//input [@id='nbsPackagePackageWeightField0']")).sendKeys(weight);
+
+        //getWait().until(ExpectedConditions.textToBe(By.xpath("//input [@id='nbsPackagePackageWeightField0']"), weight));
 
 
     }
@@ -257,4 +262,5 @@ public class MyUpsStepDefs {
         assertThat(getDriver().findElement(By.xpath("//span[@id='destinationnbsAgentSummaryPostalCode']")).getText()).isEqualTo(to.get("zip"));
 
     }
+
 }

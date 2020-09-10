@@ -1,9 +1,11 @@
 @ups
 Feature: UPS test suit
+  Background: I open UPS web page
+    Given I open url "https://www.ups.com/us/en/Home.page"
+
 
   @ups1
   Scenario: Validate Create Shipment Functionality
-    Given I open url "https://www.ups.com/us/en/Home.page"
     And I go to Shipping menu
     And I go to Create a Shipment
     When I fill out origin shipment form from "contacts"
@@ -14,7 +16,6 @@ Feature: UPS test suit
 
   @ups2
   Scenario: UPS end to end full
-    Given I open url "https://www.ups.com/us/en/Home.page"
     And I go to Shipping menu
     And I go to Create a Shipment
     When I fill out origin shipment form from "contacts"

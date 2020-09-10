@@ -2,8 +2,11 @@ package definitions;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import pages.Cat;
 
 import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class JavaStepDefs {
 
@@ -457,6 +460,33 @@ public class JavaStepDefs {
         } else {
             System.out.print("false");
         }
+
+        //solution 2
+
+        String str1 = "refer";
+        System.out.println(isPalindrome(str1));
+
+        //unit test with palindrome
+        testIsPalindrome();
+    }
+
+    public void testIsPalindrome (){
+        String str1 = "refer";
+        assertThat(isPalindrome(str1)).isTrue();
+    }
+
+    // O(n)
+    boolean isPalindrome (String word){
+        System.out.println("isPalindrome check for" + word);
+
+
+        int j = 0;
+        for (int i=word.length()-1; i<=0; i--){
+            if (word.charAt(i)!=word.charAt(j)){
+                return false;
+            }
+            j++;
+        } return true;
     }
 
     @Given("I have array with duplicates")
@@ -526,5 +556,47 @@ public class JavaStepDefs {
         } else if (num2 > 20 && num2 % 5 != 0) {
             System.out.println(num2 + " " + "is not divisible by 5 and number is out of the range 10 to 20");
         }
+    }
+
+    @Given("I have array with element")
+    public void iHaveArrayWithElement() {
+
+        int [] unsortedArr = {1,2,5,6,3,1};
+        int num =2;
+        System.out.println(findSum(unsortedArr, num));
+    }
+
+    boolean findSum (int[]arr, int sum){
+        for (int i=0; i<arr.length; i++){
+            for (int j=i+1; j<arr.length; j++){
+                if (arr[i]+arr[j] == sum){
+                    return true;
+                }
+            }
+        } return false;
+    }
+
+    @Given("I have factorial function for number {int}")
+    public void iHaveFactorialFunctionForNumber(int num) {
+        System.out.println(factorial(num));
+
+    }
+
+    long factorial (long num){
+        if (num==0){
+            return 1;
+        } return num * factorial (num-1);
+    }
+
+    @Given("I create Java Class for Cat")
+    public void iCreateJavaClassForCat() {
+        Cat cat = new Cat("Tom");
+
+        cat.getName();
+        cat.eat("milk");
+        cat.sleep();
+        cat.speak();
+        cat.walk();
+
     }
 }
