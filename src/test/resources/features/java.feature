@@ -28,7 +28,6 @@
       And I print "3" th day of the week
       And I print "7" th day of the week using switch
 
-
     @java7
     Scenario: Exercise with conditions using break
       Given I print url for "bing" page using break
@@ -120,9 +119,9 @@
 
     @java29
     Scenario: Write a function that counts number of each character in a string
-  #      Given I have a string "string "to count characters
+        Given I have a string "monopoly" to count characters
 
-    @java 30
+    @java30
     Scenario: User inputs two numbers which are divided by 5.
       Given I have integer 4 and integer 19
 
@@ -136,7 +135,19 @@
 
     @java32
     Scenario: Java Classes
-      Given I create Java Class for Cat
+      Given I create Java Class
+
+    @java33
+    Scenario: Write a function that finds fibonacci sequence
+      Given I have fibonacci sequence
+
+    @java34
+    Scenario: Write a function to reverse a text and each charachter in it
+      Given I have a string
+
+    @java35
+    Scenario: Write a function that verifies if number is prime
+      Given I have function to check prime number 97
 
 
 

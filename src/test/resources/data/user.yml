@@ -10,4 +10,12 @@ zip: "10019"
 city: New York
 state: New York
 shortstate: NY
+country: Canada
+month: Jul
+year: "1980"
+day: "12"
+car: BMW
+gender: male
+contactpersonname: David Doe
+contactpersonphone: "1234567890"
 

@@ -2,7 +2,7 @@ package definitions;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
-import pages.Cat;
+import pages.*;
 
 import java.util.*;
 
@@ -344,6 +344,7 @@ public class JavaStepDefs {
         int[] myArr = {1, 2, 5, 6};
         int[] nullArr = null;
         System.out.println(isArrayEmpty(myArr));
+
     }
 
     boolean isArrayEmpty(int[] myArr) {
@@ -470,23 +471,24 @@ public class JavaStepDefs {
         testIsPalindrome();
     }
 
-    public void testIsPalindrome (){
+    public void testIsPalindrome() {
         String str1 = "refer";
         assertThat(isPalindrome(str1)).isTrue();
     }
 
     // O(n)
-    boolean isPalindrome (String word){
+    boolean isPalindrome(String word) {
         System.out.println("isPalindrome check for" + word);
 
 
         int j = 0;
-        for (int i=word.length()-1; i<=0; i--){
-            if (word.charAt(i)!=word.charAt(j)){
+        for (int i = word.length() - 1; i <= 0; i--) {
+            if (word.charAt(i) != word.charAt(j)) {
                 return false;
             }
             j++;
-        } return true;
+        }
+        return true;
     }
 
     @Given("I have array with duplicates")
@@ -506,32 +508,44 @@ public class JavaStepDefs {
 
     @Given("I have array with max numbers")
     public void iHaveArrayWithMaxNumbers() {
-        int[] myArr = {100, 81, 77, 150};
+        int[] myArr = {6, 7, 4, 9, 7};
+
+        //Solution 1
         int max1 = myArr[0];
         int max2 = myArr[0];
+//        for (int i = 0; i < myArr.length; i++) {
+//            if (max1 < myArr[i]) {
+//                max1 = myArr[i];
+//            }
+//            for (int j = i + 1; j < myArr.length; j++) {
+//                if (max2 < myArr[j] && max2 < max1) {
+//                    max2 = myArr[j];
+//                }
+//            }
+//        }
+
+//        System.out.println("First maximum integer in array:" + max1);
+//        System.out.println("Second maximum integer in array:" + max2);
+
+        // Second solution
+        int maxVal1 = Integer.MIN_VALUE;
+        int maxVal2 = Integer.MIN_VALUE;
+
         for (int i = 0; i < myArr.length; i++) {
-            if (max1 < myArr[i]) {
-                max1 = myArr[i];
-            }
-            for (int j = i + 1; j < myArr.length; j++) {
-                if (max2 < myArr[j] && max2 < max1) {
-                    max2 = myArr[j];
-                }
+            if (maxVal1 < myArr[i]) {
+                maxVal2 = maxVal1;
+                maxVal1 = myArr[i];
+            } else if (maxVal2 < myArr[i]) {
+                maxVal2 = myArr[i];
             }
         }
-
-        System.out.println("First maximum integer in array:" + max1);
-        System.out.println("Second maximum integer in array:" + max2);
+        System.out.println(maxVal1);
+        System.out.println(maxVal2);
     }
 
-    @Given("I have a string {string}to count characters")
+    @Given("I have a string {string} to count characters")
     public void iHaveAStringToCountCharacters(String text) {
-        String[] newtext = text.split("hello", 1);
 
-        for (int i = 0; i < newtext.length; i++) {
-            String a = newtext[i];
-            System.out.println(a);
-        }
     }
 
     @Given("I have integer {int} and integer {int}")
@@ -561,19 +575,20 @@ public class JavaStepDefs {
     @Given("I have array with element")
     public void iHaveArrayWithElement() {
 
-        int [] unsortedArr = {1,2,5,6,3,1};
-        int num =2;
+        int[] unsortedArr = {1, 2, 5, 6, 3, 1};
+        int num = 2;
         System.out.println(findSum(unsortedArr, num));
     }
 
-    boolean findSum (int[]arr, int sum){
-        for (int i=0; i<arr.length; i++){
-            for (int j=i+1; j<arr.length; j++){
-                if (arr[i]+arr[j] == sum){
+    boolean findSum(int[] arr, int sum) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i] + arr[j] == sum) {
                     return true;
                 }
             }
-        } return false;
+        }
+        return false;
     }
 
     @Given("I have factorial function for number {int}")
@@ -582,15 +597,26 @@ public class JavaStepDefs {
 
     }
 
-    long factorial (long num){
-        if (num==0){
+    long factorial(long num) {
+        if (num == 0) {
             return 1;
-        } return num * factorial (num-1);
+        }
+        return num * factorial(num - 1);
     }
 
-    @Given("I create Java Class for Cat")
-    public void iCreateJavaClassForCat() {
-        Cat cat = new Cat("Tom");
+    @Given("I create Java Class")
+    public void iCreateJavaClass() {
+        // Creating Cat Class
+        // Creating Dog Class
+
+        // 4 principles of OOP
+        //Abstraction
+        //Encapsulation
+        //Inheritance
+        //Polymorphism
+
+        Animal cat = new Cat("Tom");
+        cat.setName("Bony");
 
         cat.getName();
         cat.eat("milk");
@@ -598,5 +624,122 @@ public class JavaStepDefs {
         cat.speak();
         cat.walk();
 
+        Animal dog = new Dog();
+        dog.setName("Jerry");
+        System.out.println(dog.getName());
+        dog.getName();
+        dog.eat("dog food");
+        dog.sleep();
+        dog.speak();
+        dog.walk();
+        ((Dog) dog).fetch("stick");
+        dog.color("golden");
+
+        Animal parrot = new Bird();
+        parrot.setName("Kesha");
+        parrot.color("blue and white");
+        parrot.age(5);
+        parrot.breed("Psittacidae");
+
+        Animal canary = new Canary("Little one");
+        canary.speak();
+
+
+
+        List<Animal> list = new ArrayList<>();
+        list.add(cat);
+        list.add(dog);
+        list.add(parrot);
+        list.add(canary);
+        printAnimalNames(list);
+    }
+
+    public void printAnimalNames(List<Animal> animals) {
+        System.out.println("print method");
+        for (Animal animal : animals) {
+            System.out.println(animal.getName());
+            animal.speak();
+        }
+    }
+
+    @Given("I have a string")
+    public void iHaveAString() {
+        String text = "I Am Happy";
+        System.out.println(reverseString(text));
+        String str1 = "yppaH mA I";
+        assertThat(reverseString(text)).isNotEqualTo(text);
+        assertThat(reverseString(text)).isEqualTo(str1);
+
+    }
+
+    public String reverseString(String str) {
+        String[] array = str.split(" ");
+        String a = " ";
+        for (int i = array.length - 1; i >= 0; i--) {
+            char[] t = array[i].toCharArray();
+            for (int j = t.length - 1; j >= 0; j--) {
+                a = a + t[j];
+            }
+            a = a + " ";
+        }
+        return a;
+    }
+
+    @Given("I have fibonacci sequence")
+    public void iHaveFibonacciSequence() {
+
+        for (int i = 1; i <= 11; i++) {
+            System.out.print(fib(i) + " ");
+        }
+    }
+
+    //solution with recursive approach
+    long fib(long num) {
+        if (num == 0 || num == 1) {
+            return num;
+        }
+        return fib(num - 1) + fib(num - 2);
+    }
+
+    //  fibonacci = {1,1,2,3,5,8,13,21,34,55,89};
+    long fibFor(int seq) {
+        long prevFib = 0;
+        long nextFib = 1;
+        for (int i = 1; i < seq; i++) {
+            long temp = nextFib;
+            nextFib = prevFib + nextFib;
+            prevFib = temp;
+        }
+        return nextFib;
+    }
+
+    @Given("I have function to check prime number {int}")
+    public void iHaveFunctionToCheckPrimeNumber(int num) {
+        System.out.println(isPrime(num));
+
+        //print range of prime numbers
+        for (int i = 1; i<= num; i++){
+            if(isPrime(i)){
+                System.out.print(i + " ");
+            }
+        }
+    }
+
+    boolean isPrime(int num) {
+        //System.out.println("Check if the number " + num + " is prime");
+
+        if (num < 2) {
+            return false;
+        }
+        if (num % 2 == 0 && num != 2) {
+            return false;
+        }
+        double sqrt = Math.sqrt(num);
+        for (int i = 3; i <= sqrt; i++) {
+            if (num % i == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

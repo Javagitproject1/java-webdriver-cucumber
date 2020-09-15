@@ -59,7 +59,7 @@ public class TestContext {
     public static Map<String, String> getData(String fileName) {
 
         try {
-            String myPath = System.getProperty("user.dir") + "/src/test/resources/data/" + fileName + ".yml";
+            String myPath = System.getProperty("user.dir") + "/src/test/resources/data/" +fileName+".yml";
             File myFile = new File(myPath);
             InputStream stream = new FileInputStream(myFile);
             Yaml myYaml = new Yaml();
