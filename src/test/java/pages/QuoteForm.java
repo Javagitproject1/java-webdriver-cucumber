@@ -11,11 +11,6 @@ import static support.TestContext.getExecutor;
 
 public class QuoteForm extends Page {
 
-    public QuoteForm() {
-        url = "https://skryabin.com/market/quote.html";
-        title = "Get a quote";
-    }
-
     // selectors
     @FindBy(xpath = "//input[@name='username']")
     private WebElement username;

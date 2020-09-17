@@ -2,6 +2,8 @@ package pages;
 
 import org.openqa.selenium.support.PageFactory;
 
+import java.sql.SQLOutput;
+
 import static support.TestContext.getDriver;
 
 public class Page {
@@ -13,12 +15,24 @@ public class Page {
     // constructor
     public Page() {
         PageFactory.initElements(getDriver(), this);
-        url = "https://skryabin.com/market/quote.html";
-        title = "Get a quote";
     }
 
-    public void open() {
-        getDriver().get(url);
+    public void open(String whatPage) throws Exception {
+        switch (whatPage){
+            case "quote":
+                url = "https://skryabin.com/market/quote.html";
+                title = "Get a quote";
+                getDriver().get(url);
+                break;
+            case "ups":
+                url = "https://www.ups.com/us/en/Home.page";
+                title = "Global Shipping & Logistics Services | UPS - United States";
+                getDriver().get(url);
+                break;
+            default:
+                throw new Exception("This is unknown page to the system:" + whatPage);
+        }
+
     }
 
 }

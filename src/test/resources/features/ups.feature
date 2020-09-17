@@ -1,7 +1,7 @@
 @ups
 Feature: UPS test suit
   Background: I open UPS web page
-    Given I open url "https://www.ups.com/us/en/Home.page"
+    #Given I open url "https://www.ups.com/us/en/Home.page"
 
 
   @ups1
@@ -34,6 +34,17 @@ Feature: UPS test suit
     And I select Paypal payment type
     And I submit the shipment form
     Then I review all recorded details from "contacts" and to "user" on the review page
+    And I cancel the shipment form
+    Then I verify shipment form is reset
+
+  @ups3
+  Scenario: UPS end to end first OOP
+    Given I open "ups" page
+    And I open Shipping menu
+    And I go to Create a Shipment
+    When I fill out origin shipment field from "contacts"
+    And I submit the shipment form
+    Then I verify origin shipment fields submitted according to "contacts"
     And I cancel the shipment form
     Then I verify shipment form is reset
 

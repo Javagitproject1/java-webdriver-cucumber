@@ -16,6 +16,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.UpsForm;
+import pages.UpsResults;
 import support.TestContext;
 
 import javax.sound.midi.Soundbank;
@@ -37,6 +39,9 @@ import static support.TestContext.*;
 
 public class MyUpsStepDefs {
     private Object JSpinner;
+    UpsForm ups = new UpsForm();
+    UpsResults results = new UpsResults();
+
 
     @And("I go to Shipping menu")
     public void IGoToShippingMenu() {
@@ -45,11 +50,6 @@ public class MyUpsStepDefs {
 
     }
 
-    @And("I go to Create a Shipment")
-    public void iGoToCreateAShipment() {
-        getDriver().findElement(By.xpath("//a[@class='ups-analytics'][contains(text(),'Create a Shipment:')]")).click();
-
-    }
 
     @When("I fill out origin shipment form from {string}")
     public void iFillOutOriginShipmentFormFrom(String data) {
@@ -75,50 +75,72 @@ public class MyUpsStepDefs {
 
     @And("I submit the shipment form")
     public void iSubmitTheShipmentForm() {
-        getDriver().findElement(By.xpath("//button[contains (@class, 'ups-cta_primary')]")).sendKeys(DOWN);
-        getWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains (@class, 'ups-cta_primary')]")));
-        WebElement submit = getDriver().findElement(By.xpath("//button[contains (@class, 'ups-cta_primary')]"));
-        getExecutor().executeScript("arguments[0].click();", submit);
+//        getDriver().findElement(By.xpath("//button[contains (@class, 'ups-cta_primary')]")).sendKeys(DOWN);
+//        getWait().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains (@class, 'ups-cta_primary')]")));
+//        WebElement submit = getDriver().findElement(By.xpath("//button[contains (@class, 'ups-cta_primary')]"));
+//        getExecutor().executeScript("arguments[0].click();", submit);
+
+        ups.clickSubmit();
 
     }
 
     @Then("I verify origin shipment fields submitted according to {string}")
     public void iVerifyOriginShipmentFieldsSubmittedAccordingTo(String verifyData) {
-        getWait(5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class,'ups-section_heading ups-centered_header')]")));
+        ups.waitForHeader();
+
+        //getWait(5).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class,'ups-section_heading ups-centered_header')]")));
 
         Map<String, String> form = getData(verifyData);
 
-        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryName']")).getText()).isEqualTo(form.get("name"));
-        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryAddressLine1']")).getText()).isEqualTo(form.get("address"));
-        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryCity']")).getText()).isEqualTo(form.get("city"));
-        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryState']")).getText()).containsIgnoringCase(form.get("shortstate"));
-        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryPostalCode']")).getText()).isEqualTo(form.get("zip"));
-        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryEmail']")).getText()).isEqualTo(form.get("email"));
-        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryPhone']")).getText()).isEqualTo(form.get("phone"));
+        assertThat(results.getName()).isEqualTo(form.get("name"));
+        assertThat(results.getAddress()).isEqualTo(form.get("address"));
+        assertThat(results.getCity()).isEqualTo(form.get("city"));
+        assertThat(results.getState()).isEqualTo(form.get("shortstate"));
+        assertThat(results.getPostalCode()).isEqualTo(form.get("zip"));
+        assertThat(results.getEmail()).isEqualTo(form.get("email"));
+        assertThat(results.getPhone()).isEqualTo(form.get("phone"));
 
+//        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryName']")).getText()).isEqualTo(form.get("name"));
+//        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryAddressLine1']")).getText()).isEqualTo(form.get("address"));
+//        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryCity']")).getText()).isEqualTo(form.get("city"));
+//        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryState']")).getText()).containsIgnoringCase(form.get("shortstate"));
+//        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryPostalCode']")).getText()).isEqualTo(form.get("zip"));
+//        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryEmail']")).getText()).isEqualTo(form.get("email"));
+//        assertThat(getDriver().findElement(By.xpath("//span[@id='originnbsAgentSummaryPhone']")).getText()).isEqualTo(form.get("phone"));
 
     }
 
     @And("I cancel the shipment form")
     public void iCancelTheShipmentForm() {
-        WebElement cancel = getDriver().findElement(By.xpath("//button[text()='Cancel Shipment']"));
-        getExecutor().executeScript("arguments[0].click();", cancel);
-        getDriver().switchTo().activeElement();
-        getDriver().findElement(By.xpath("//button[@id='nbsCancelShipmentWarningYes']")).click();
+//        WebElement cancel = getDriver().findElement(By.xpath("//button[text()='Cancel Shipment']"));
+//        getExecutor().executeScript("arguments[0].click();", cancel);
+//        getDriver().switchTo().activeElement();
+//        getDriver().findElement(By.xpath("//button[@id='nbsCancelShipmentWarningYes']")).click();
 
+        ups.clickCancel();
+        ups.clickYes();
     }
 
     @Then("I verify shipment form is reset")
     public void iVerifyShipmentFormIsReset() {
 
-        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='originname']")));
-        assertThat(getDriver().findElement(By.xpath("//input[@id='originname']")).getText()).isEmpty();
-        assertThat(getDriver().findElement(By.xpath("//input[@id='originaddress1']")).getText()).isEmpty();
-        assertThat(getDriver().findElement(By.xpath("//input[@id='originpostal']")).getText()).isEmpty();
-        assertThat(getDriver().findElement(By.xpath("//input[@id='origincity']")).getText()).isEmpty();
-        assertThat(getDriver().findElement(By.xpath("//select[@id='originstate']")).getAttribute("value")).isEqualTo("0: null");
-        assertThat(getDriver().findElement(By.xpath("//input[@id='originemail']")).getText()).isEmpty();
-        assertThat(getDriver().findElement(By.xpath("//input[@id='originphone']")).getText()).isEmpty();
+//        getWait().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='originname']")));
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='originname']")).getText()).isEmpty();
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='originaddress1']")).getText()).isEmpty();
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='originpostal']")).getText()).isEmpty();
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='origincity']")).getText()).isEmpty();
+//        assertThat(getDriver().findElement(By.xpath("//select[@id='originstate']")).getAttribute("value")).isEqualTo("0: null");
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='originemail']")).getText()).isEmpty();
+//        assertThat(getDriver().findElement(By.xpath("//input[@id='originphone']")).getText()).isEmpty();
+
+        assertThat(ups.fillOriginName().isEmpty());
+        assertThat(ups.fillOriginAddress().isEmpty());
+        assertThat(ups.fillOriginPostal().isEmpty());
+        assertThat(ups.fillOriginCity().isEmpty());
+        assertThat(ups.fillOriginState().isEmpty());
+        assertThat(ups.fillOriginEmail().isEmpty());
+        assertThat(ups.fillOriginPhone().isEmpty());
+
     }
 
     @When("I fill out destination shipment fields from {string}")
@@ -263,4 +285,29 @@ public class MyUpsStepDefs {
 
     }
 
+    @And("I open Shipping menu")
+    public void iOpenShippingMenu() {
+        ups.openMenu();
+    }
+
+    @And("I go to Create a Shipment")
+    public void iGoToCreateAShipment() {
+        //getDriver().findElement(By.xpath("//a[@class='ups-analytics'][contains(text(),'Create a Shipment:')]")).click();
+        ups.openMenuOption();
+        ups.waitForHeader();
+    }
+
+    @When("I fill out origin shipment field from {string}")
+    public void iFillOutOriginShipmentFieldFrom(String role) {
+
+        Map<String, String> form = getData(role);
+
+        ups.fillOriginName(form.get("name"));
+        ups.fillOriginAddress(form.get("address"));
+        ups.fillOriginPostal(form.get("zip"));
+        ups.fillOriginCity(form.get("city"));
+        ups.fillOriginState(form.get("state"));
+        ups.fillOriginEmail(form.get("email"));
+        ups.fillOriginPhone(form.get("phone"));
+    }
 }

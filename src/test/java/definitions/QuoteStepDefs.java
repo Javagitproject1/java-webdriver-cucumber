@@ -6,6 +6,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import pages.QuoteForm;
 import pages.QuoteResults;
+import pages.UpsForm;
 
 import java.util.Map;
 
@@ -17,23 +18,25 @@ public class QuoteStepDefs {
 
     QuoteForm form = new QuoteForm();
     QuoteResults results = new QuoteResults();
+    QuoteForm formPage = new QuoteForm();
 
     @Given("I open {string} page")
-    public void iOpenPage(String url) throws Exception {
-        switch (url) {
+    public void iOpenPage(String page) throws Exception {
+        switch (page) {
             case "quote":
-                QuoteForm formPage = new QuoteForm();
-                formPage.open();
+                formPage.open(page);
                 break;
-
+            case "ups":
+                formPage.open(page);
+                break;
             default:
-                throw new Exception("Unknown page:" + url);
+                throw new Exception("Unknown page:" + page);
         }
 
     }
 
     @When("I fill out required fields for {string} oop")
-    public void iFillOutRequiredFieldsForOop(String role) throws InterruptedException {
+    public void iFillOutRequiredFieldsForOop(String role) {
         Map<String, String> user = getData(role);
         form.fillUsername(user.get("username"));
         form.fillEmail(user.get("email"));
@@ -48,7 +51,7 @@ public class QuoteStepDefs {
     }
 
     @And("I verify results for {string}")
-    public void iVerifyResultsFor(String role) throws InterruptedException {
+    public void iVerifyResultsFor(String role) {
         Map<String, String> user = getData(role);
 
         assertThat(results.userName()).isEqualTo(user.get("username"));
@@ -61,7 +64,7 @@ public class QuoteStepDefs {
     }
 
     @When("I fill out optional fields for {string} oop")
-    public void iFillOutOptionalFieldsForOop(String role) throws InterruptedException {
+    public void iFillOutOptionalFieldsForOop(String role) {
         Map<String, String> user = getData(role);
         form.phone(user.get("phone"));
         form.birthdate();
@@ -181,7 +184,7 @@ public class QuoteStepDefs {
     }
 
     @When("I fill out name field with first name {string} and last name {string}")
-    public void iFillOutNameFieldWithFirstNameAndLastName(String firstName, String lastName) throws InterruptedException {
+    public void iFillOutNameFieldWithFirstNameAndLastName(String firstName, String lastName) {
         form.fillName(firstName, lastName);
     }
 
@@ -198,7 +201,7 @@ public class QuoteStepDefs {
     }
 
     @When("I fill out name field with first name {string}, middle name {string}, last name {string}")
-    public void iFillOutNameFieldWithFirstNameMiddleNameLastName(String firstName, String middleName, String lastName) throws InterruptedException {
+    public void iFillOutNameFieldWithFirstNameMiddleNameLastName(String firstName, String middleName, String lastName) {
         form.fillName(firstName, middleName, lastName);
     }
 }
