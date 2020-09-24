@@ -11,6 +11,11 @@ import static support.TestContext.*;
 public class UpsForm extends Page {
     //selectors
 
+    public UpsForm() {
+        url = "https://www.ups.com/us/en/Home.page";
+        title = "Global Shipping & Logistics Services | UPS - United States";
+    }
+
     @FindBy(xpath = "//a[@id='ups-menuLinks2']")
     private WebElement topMenu;
 

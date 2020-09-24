@@ -18,22 +18,6 @@ public class QuoteStepDefs {
 
     QuoteForm form = new QuoteForm();
     QuoteResults results = new QuoteResults();
-    QuoteForm formPage = new QuoteForm();
-
-    @Given("I open {string} page")
-    public void iOpenPage(String page) throws Exception {
-        switch (page) {
-            case "quote":
-                formPage.open(page);
-                break;
-            case "ups":
-                formPage.open(page);
-                break;
-            default:
-                throw new Exception("Unknown page:" + page);
-        }
-
-    }
 
     @When("I fill out required fields for {string} oop")
     public void iFillOutRequiredFieldsForOop(String role) {

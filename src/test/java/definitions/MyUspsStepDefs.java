@@ -11,6 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.*;
 
 
 import java.util.ArrayList;
@@ -22,6 +23,13 @@ import static org.openqa.selenium.Keys.*;
 import static support.TestContext.*;
 
 public class MyUspsStepDefs {
+
+    UspsHome uspsHome = new UspsHome();
+    UspsLookUpByZip uspsfindByZip = new UspsLookUpByZip();
+    UspsHeader uspsHeader = new UspsHeader();
+    UspsByAddressForm fillByAddressForm = new UspsByAddressForm();
+    UspsByAddressResult uspsByAddressResult = new UspsByAddressResult();
+
     @When("I navigate to Look Up a ZIP Code page by address")
     public void iNavigateToLookUpAZIPCodePageByAddress() {
 
@@ -491,5 +499,117 @@ public class MyUspsStepDefs {
 
         String sizeText = getDriver().findElement(By.xpath("//div[@id='availableboxes']")).getText();
         assertThat(sizeText).contains(size);
+    }
+
+    @When("I navigate to Look Up a ZIP Code page by address OOP")
+    public void iNavigateToLookUpAZIPCodePageByAddressOOP() {
+        uspsHeader.goTolookUpByZip();
+        uspsfindByZip.clickFindByAddress();
+
+    }
+
+    @And("I fill out {string} street, {string} city, {string} state OOP")
+    public void iFillOutStreetCityStateOOP(String street, String city, String state) {
+        fillByAddressForm.fillStreet(street);
+        fillByAddressForm.fillCity(city);
+        fillByAddressForm.fillState(state);
+        fillByAddressForm.clickFind();
+    }
+
+    @Then("I validate {string} zip code exist in the result OOP")
+    public void iValidateZipCodeExistInTheResultOOP(String zip) {
+        String actualTotalResult = uspsByAddressResult.getSearchResult();
+        assertThat(actualTotalResult).contains(zip);
+
+        boolean areAllItemsContainZip = uspsByAddressResult.areAllResultsContainZip(zip);
+        assertThat(areAllItemsContainZip).isTrue();
+
+    }
+
+    @When("I go to Calculate Price Page OOP")
+    public void iGoToCalculatePricePageOOP() {
+        uspsHeader.goToCalculatePrice();
+    }
+
+    @And("I select {string} with {string} shape OOP")
+    public void iSelectWithShapeOOP(String country, String shape) {
+        UspsPostageCalculator uspsPostageCalculator  = new UspsPostageCalculator();
+        uspsPostageCalculator.selectCountry(country);
+
+        UspsPostageShape uspsPostageShape = new UspsPostageShape();
+        uspsPostageShape.selectPostageByType(shape);
+    }
+
+    @And("I define {string} quantity OOP")
+    public void iDefineQuantityOOP(String value) {
+        UspsPostageCalculatorForm uspsPostageCalculatorForm = new UspsPostageCalculatorForm();
+        uspsPostageCalculatorForm.setQuantity(value);
+    }
+
+    @Then("I calculate the price and validate cost is {string} OOP")
+    public void iCalculateThePriceAndValidateCostIsOOP(String cost) {
+        UspsPostageCalculatorForm uspsPostageCalculatorForm = new UspsPostageCalculatorForm();
+        uspsPostageCalculatorForm.clickCalculate();
+
+        String totalCost = uspsPostageCalculatorForm.getTotalCost();
+        assertThat(totalCost).isEqualTo(cost);
+
+    }
+
+    @When("I perform {string} search OOP")
+    public void iPerformSearchOOP(String str) {
+        uspsHeader.goToSearch(str);
+    }
+
+    @And("I set {string} in filters OOP")
+    public void iSetInFiltersOOP(String filter) {
+        UspsFreeBoxesPage uspsFreeBoxesPage = new UspsFreeBoxesPage();
+        uspsFreeBoxesPage.selectCategory(filter);
+        
+    }
+
+    @Then("I verify that {string} results found OOP")
+    public void iVerifyThatResultsFoundOOP(String results) {
+
+
+        int expectedSize = Integer.parseInt(results);
+        UspsFreeBoxesPage uspsFreeBoxesPage = new UspsFreeBoxesPage();
+        assertThat(uspsFreeBoxesPage.getNumberOfResults()).isEqualTo(expectedSize);
+        assertThat(uspsFreeBoxesPage.getFoundResults()).contains(results);
+    }
+
+    @When("I select {string} in results OOP")
+    public void iSelectInResultsOOP(String option) {
+        new UspsPiorityMailPage().selectPriorityMail(option);
+    }
+
+    @And("I click {string} button OOP")
+    public void iClickButtonOOP(String button) {
+        new UspsPiorityMailPage().clickShipNow();
+    }
+
+    @Then("I validate that Sign In is required OOP")
+    public void iValidateThatSignInIsRequiredOOP() {
+
+        UspsSignInPage uspsSignInPage = new UspsSignInPage();
+        assertThat(uspsSignInPage.signInHeader()).isTrue();
+    }
+
+    @When("I go to {string} tab OOP")
+    public void iGoToTabOOP(String menuOption) {
+        uspsHeader.goToHelpPage(menuOption);
+
+    }
+
+    @And("I perform {string} help search OOP")
+    public void iPerformHelpSearchOOP(String text) {
+        new UspsHelpPage().runSearch(text);
+    }
+
+    @Then("I verify that no results of {string} available in help search OOP")
+    public void iVerifyThatNoResultsOfAvailableInHelpSearchOOP(String searchResult) {
+        String results = new UspsHelpPageResult().getHelpSearchResults();
+        assertThat(results).doesNotContain(searchResult);
+
     }
 }
