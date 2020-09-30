@@ -36,4 +36,10 @@ public class UspsPostageShape extends UspsHeader {
         }
     }
 
+    //dynamic element for shape
+
+    private WebElement selectPostageByShape (String value){
+        return getDriver().findElement(By.xpath("//input[@value=' " +value+"']"));
+    }
+
 }

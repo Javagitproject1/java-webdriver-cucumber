@@ -1,14 +1,9 @@
 package definitions;
 
 import cucumber.api.java.en.Given;
-import pages.QuoteForm;
-import pages.QuoteResults;
-import pages.UpsForm;
-import pages.UspsHome;
+import pages.*;
 
 public class CommonStepDefs {
-
-    QuoteForm formPage = new QuoteForm();
 
     @Given("I open {string} page")
     public void iOpenPage(String page) throws Exception {
@@ -21,6 +16,9 @@ public class CommonStepDefs {
                 break;
             case "usps":
                 new UspsHome().open();
+                break;
+            case "careers":
+                new CareersPortalLandingPage().open();
                 break;
             default:
                 throw new Exception("Unknown page:" + page);

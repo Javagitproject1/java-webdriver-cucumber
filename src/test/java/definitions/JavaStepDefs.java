@@ -407,7 +407,6 @@ public class JavaStepDefs {
 
     @Given("I have array to check for another element")
     public void iHaveArrayToCheckForAnotherElement() {
-
         Integer[] numArr = {1, 5, 6, 7, 3, 4};
         int anotherElement = 7;
         System.out.println(isArrayHasElement(numArr, anotherElement));
@@ -448,6 +447,8 @@ public class JavaStepDefs {
         for (int i = words.length - 1; i >= 0; i--) {
             System.out.print(words[i] + " ");
         }
+
+
     }
 
     @Given("I have a string {string}")
@@ -687,7 +688,6 @@ public class JavaStepDefs {
 
     @Given("I have fibonacci sequence")
     public void iHaveFibonacciSequence() {
-
         for (int i = 1; i <= 11; i++) {
             System.out.print(fib(i) + " ");
         }
