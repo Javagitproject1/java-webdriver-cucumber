@@ -14,8 +14,11 @@ public class CareersPortalHeader extends Page {
     private WebElement recruiterLogin;
 
     @FindBy (xpath= "//span[@class='navbar-brand position-center']")
-    private WebElement recruiterPage;
+    private WebElement pageTitle;
 
+    private WebElement headerButtons(String value){
+        return getByXpath("//button[text ()='" + value + "']");
+    }
     public void goToLogin(){
         mouseOver(login);
         click(login);
@@ -27,6 +30,13 @@ public class CareersPortalHeader extends Page {
     }
 
     public String getRecruitInfo(){
-        return recruiterPage.getText();
+        waitForVisible(pageTitle);
+        return pageTitle.getText();
+    }
+
+    public void clickOnButton (String value){
+        WebElement headButton = headerButtons(value);
+        waitForVisible(headButton);
+        click(headButton);
     }
 }

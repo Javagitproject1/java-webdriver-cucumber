@@ -41,7 +41,7 @@ public class Page {
     }
 
     protected void waitForVisible (WebElement element){
-        getWait(5).until(ExpectedConditions.visibilityOf(element));
+        getWait(10).until(ExpectedConditions.visibilityOf(element));
     }
 
     protected void waitForInVisible (WebElement element){
