@@ -4,7 +4,6 @@ package pages;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import static support.TestContext.getWait;
 
 public class CareersPortalRecruitPage extends CareersPortalHeader {
 
@@ -16,13 +15,14 @@ public class CareersPortalRecruitPage extends CareersPortalHeader {
         return  getByXpath("//h4[text()='" + str + "']/ancestor::div[contains(@class,'card')]//button");
     }
 
-    @FindBy (xpath = "//div[@class='row']/div")
+    @FindBy (xpath = "//h4[contains(text(),'')]")
     private WebElement allPositionCards;
 
     public void goToJob(String value){
+        waitForAllVisible(allPositionCards);
         WebElement card = positionCard(value);
-        waitForVisible(card);
         mouseOver(card);
+
     }
 
     public void removeJob (String title){
@@ -31,7 +31,6 @@ public class CareersPortalRecruitPage extends CareersPortalHeader {
         click(closeButton);
         waitForDisappear(positionCard(title));
     }
-
 
     public boolean isPositionVisible(String title) {
         try {

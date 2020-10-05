@@ -2,11 +2,11 @@ package pages;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-
-import static support.TestContext.getWait;
 
 public class CareersPortalLandingPage extends CareersPortalHeader {
+    @FindBy (xpath = "//div[@class='position-front']")
+    private WebElement allPositions;
+
     public CareersPortalLandingPage() {
         url = "https://skryabin-careers.herokuapp.com/";
         title = "Careers Portal";
@@ -20,6 +20,7 @@ public class CareersPortalLandingPage extends CareersPortalHeader {
         return getByXpath("//h4[text()='"+title+"']/following::button[1]");
     }
     public void selectPosition (String title){
+        waitForAllVisible(allPositions);
         WebElement card = positionCard(title);
         click(card);
     }

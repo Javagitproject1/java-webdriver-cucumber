@@ -42,8 +42,7 @@ public class CareersPortalStepDefs {
     }
 
     @When("I remove {string} position")
-    public void iRemovePosition(String position) throws InterruptedException {
-        Thread.sleep(1000);
+    public void iRemovePosition(String position){
         careersPortalRecruitPage.goToJob(position);
         careersPortalRecruitPage.removeJob(position);
     }
@@ -54,8 +53,7 @@ public class CareersPortalStepDefs {
     }
 
     @And("I select desired position {string}")
-    public void iSelectDesiredPosition(String position) throws InterruptedException {
-        Thread.sleep(1000);
+    public void iSelectDesiredPosition(String position){
         careersPortalLandingPage.selectPosition(position);
         assertThat(careersPortalPositionPage.getTitle()).containsIgnoringCase(position);
     }
@@ -85,12 +83,12 @@ public class CareersPortalStepDefs {
     }
 
     @When("I go back to {string} page")
-    public void iGoBackToPage(String page) throws InterruptedException {
+    public void iGoBackToPage(String page){
         careersPortalHeader.clickOnButton(page);
     }
 
     @And("I select another position {string}")
-    public void iSelectAnotherPosition(String position) throws InterruptedException {
+    public void iSelectAnotherPosition(String position){
         assertThat(careersPortalMyJobsPage.confirmPosition()).isNotEmpty();
         careersPortalLandingPage.clickOnSelectPosition(position);
     }
