@@ -25,13 +25,80 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TestContext {
 
     private static WebDriver driver;
+    private static String timestamp;
+    private static String currentDate;
+    private static Map<String, Object> testData = new HashMap<>();
+
+    public static String getTimestamp() {
+        return timestamp;
+    }
+
+    public static void setTimestamp() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyy-MM-dd-h-mm-sss");
+        timestamp = dateFormat.format(new Date());
+    }
+
+    public static String getCurrentDate() {
+        return currentDate;
+    }
+
+    public static void setCurrentDate() {
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        currentDate = date.format(new Date());
+    }
+
+    public static Map<String, Object> getTestDataMap(String key) {
+        return (Map<String, Object>) testData.get(key);
+    }
+
+    public static Integer getTestDataInteger(String key) {
+        return (Integer) testData.get(key);
+    }
+
+    public static String getTestDataString(String key) {
+        return (String) testData.get(key);
+    }
+
+    public static void setTestData(String key, Object value) {
+        testData.put(key, value);
+    }
+
+    public static Map<String, String> getPosition(String title) {
+        Map<String, String> position = getData(title);
+        String updatedTitle = position.get("title");
+        if (updatedTitle != null) {
+            position.put("title", updatedTitle + getTimestamp());
+        }
+
+        String actualDate = position.get("dateOpen");
+        if (actualDate.isEmpty() && actualDate.isBlank()) {
+            position.put("dateOpen", getCurrentDate());
+        } else if (actualDate != null) {
+            String isoDateOpen = new SimpleDateFormat("yyyy-MM-dd").format(new Date(actualDate));
+            position.put("dateOpen", isoDateOpen);
+        }
+        return position;
+    }
+
+    public static Map<String, String> getCandidate(String email) {
+        Map<String, String> candidate = getData(email);
+        String currentEmail = candidate.get("email");
+        if (currentEmail != null) {
+            String[] newEmail = currentEmail.split("@");
+            candidate.put("email", newEmail[0] + getTimestamp() + newEmail[1]);
+        }
+        return candidate;
+    }
+
 
     public static WebDriver getDriver() {
         return driver;
@@ -59,7 +126,7 @@ public class TestContext {
     public static Map<String, String> getData(String fileName) {
 
         try {
-            String myPath = System.getProperty("user.dir") + "/src/test/resources/data/" +fileName+".yml";
+            String myPath = System.getProperty("user.dir") + "/src/test/resources/data/" + fileName + ".yml";
             File myFile = new File(myPath);
             InputStream stream = new FileInputStream(myFile);
             Yaml myYaml = new Yaml();
@@ -149,4 +216,6 @@ public class TestContext {
             throw new RuntimeException("Unsupported test environment: " + testEnv);
         }
     }
+
+
 }

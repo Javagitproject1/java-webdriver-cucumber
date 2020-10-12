@@ -106,6 +106,6 @@ public class Page {
     }
 
     protected void waitForAllVisible (WebElement element){
-        getWait().until(ExpectedConditions.visibilityOfAllElements(element));
+        getWait(15).until(ExpectedConditions.visibilityOfAllElements(element));
     }
 }

@@ -13,6 +13,8 @@ public class Hooks {
     @Before(order = 0)
     public void scenarioStart() {
         TestContext.initialize();
+        TestContext.setTimestamp();
+        TestContext.setCurrentDate();
         getDriver().manage().deleteAllCookies();
     }
 

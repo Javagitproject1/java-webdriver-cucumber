@@ -23,3 +23,13 @@
       Then I verify I have submitted for position "Principal Applications Developer"
       And I "Logout"
 
+    @careers3
+    Scenario: Recruiter creates position
+      Given I open "careers" page
+      And I login as "recruiter"
+      Then I verify "recruiter" login
+      When I create new "automation" position
+      Then I verify new "automation" position is created
+      When I remove new "automation" position
+      And I verify new "automation" position is removed
+

@@ -7,25 +7,27 @@ import org.openqa.selenium.support.FindBy;
 
 public class CareersPortalRecruitPage extends CareersPortalHeader {
 
-    private WebElement positionCard (String title){
+    private WebElement positionCard(String title) {
         return getByXpath("//h4[text()='" + title + "']/ancestor::div[contains(@class,'card-body')]");
     }
 
-    private WebElement closePositionButton (String str) {
-        return  getByXpath("//h4[text()='" + str + "']/ancestor::div[contains(@class,'card')]//button");
+    private WebElement closePositionButton(String str) {
+        return getByXpath("//h4[text()='" + str + "']/ancestor::div[contains(@class,'card')]//button");
     }
 
-    @FindBy (xpath = "//h4[contains(text(),'')]")
+    @FindBy(xpath = "//h4[contains(text(),'')]/ancestor::div[contains(@class,'card-body')]")
     private WebElement allPositionCards;
 
-    public void goToJob(String value){
+    @FindBy(xpath = "//h4[text()='New Position']")
+    private WebElement newPosition;
+
+    public void goToJob(String value) {
         waitForAllVisible(allPositionCards);
         WebElement card = positionCard(value);
         mouseOver(card);
-
     }
 
-    public void removeJob (String title){
+    public void removeJob(String title) {
         WebElement closeButton = closePositionButton(title);
         waitForElementIsClickable(closeButton);
         click(closeButton);
@@ -40,8 +42,13 @@ public class CareersPortalRecruitPage extends CareersPortalHeader {
         }
     }
 
-    public String getAllJobs (){
+    public String getAllJobs() {
+        waitForAllVisible(allPositionCards);
         return allPositionCards.getText();
     }
 
+    public void clickOnNewPosition() {
+        waitForAllVisible(allPositionCards);
+        click(newPosition);
+    }
 }
