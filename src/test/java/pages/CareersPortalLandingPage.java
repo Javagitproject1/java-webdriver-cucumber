@@ -1,7 +1,12 @@
 package pages;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.concurrent.TimeUnit;
+
+import static support.TestContext.getDriver;
 
 public class CareersPortalLandingPage extends CareersPortalHeader {
     @FindBy (xpath = "//div[@class='position-front']")
@@ -19,6 +24,11 @@ public class CareersPortalLandingPage extends CareersPortalHeader {
     private WebElement anotherPositionCard(String title){
         return getByXpath("//h4[text()='"+title+"']/following::button[1]");
     }
+
+    private WebElement selectedPosition (String title){
+        return getByXpath("//h4[text()='" + title + "']/ancestor::li[contains(@class,'li-selected')]");
+    }
+
     public void selectPosition (String title){
         waitForAllVisible(allPositions);
         WebElement card = positionCard(title);
@@ -33,5 +43,14 @@ public class CareersPortalLandingPage extends CareersPortalHeader {
         WebElement checkButton = anotherPositionCard(value);
         waitForVisible(checkButton);
         click(checkButton);
+    }
+
+    public boolean isPositionSelected (String title){
+        getDriver().manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        try {
+            return selectedPosition(title).isDisplayed();
+        } catch (NoSuchElementException e){
+            return false;
+        }
     }
 }

@@ -33,3 +33,42 @@
       When I remove new "automation" position
       And I verify new "automation" position is removed
 
+    @careers4
+    Scenario: Recruiter updates position
+      Given I open "careers" page
+      And I login as "recruiter"
+      And I create new "automation" position
+      Then I verify new "automation" position is created
+      When I update new "automation" position
+      Then I verify new "automation" position is updated
+
+    @careers5
+    Scenario: Candidate creates profile
+      Given I open "careers" page
+      And I submit application to a "Test Automation Engineer" position as a "candidate"
+      Then I verify new "candidate" is created
+      When I delete candidate profile
+      Then I verify new "candidate" is removed
+
+    @careers6
+    Scenario: Candidate updates profile
+      Given I open "careers" page
+      And I submit application to a "Test Automation Engineer" position as a "candidate"
+      Then I verify new "candidate" is created
+      When I update new "candidate"
+      Then I verify new "candidate" is updated
+      When I delete new candidate profile
+      Then I verify new "candidate" is removed
+
+    @careers7
+    Scenario: Candidates applies and withdraws from a new position
+      Given I open "careers" page
+      And I login as "candidate1"
+      Then I verify login for "candidate1"
+      When I apply for a "Principal Automation Engineer" position
+      Then I see "Principal Automation Engineer" position marked as applied
+      And I see "Principal Automation Engineer" position in "My Jobs"
+      When I withdraw from "Principal Automation Engineer" position
+      Then I don't see "Principal Automation Engineer" position in my jobs
+
+

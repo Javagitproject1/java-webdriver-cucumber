@@ -94,7 +94,7 @@ public class TestContext {
         String currentEmail = candidate.get("email");
         if (currentEmail != null) {
             String[] newEmail = currentEmail.split("@");
-            candidate.put("email", newEmail[0] + getTimestamp() + newEmail[1]);
+            candidate.put("email", newEmail[0] + getTimestamp() + "@" + newEmail[1]);
         }
         return candidate;
     }

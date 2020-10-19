@@ -9,6 +9,12 @@ public class CareersPortalPositionPage extends CareersPortalHeader {
     @FindBy (xpath = "//label[@for='positionTitle']/following-sibling::span")
     private WebElement positionTitle;
 
+    @FindBy (xpath = "//button[text()='Edit'][@type='submit']")
+    private WebElement edit;
+
+    @FindBy (xpath = "//button[text()='Apply'][@type='submit']")
+    private WebElement apply;
+
     private WebElement button(String value){
         return getByXpath("//button[text()='" + value + "'][@type='submit']");
     }
@@ -23,4 +29,15 @@ public class CareersPortalPositionPage extends CareersPortalHeader {
         waitForVisible(myButton);
         click(myButton);
     }
+
+    public void clickEdit (){
+        waitForVisible(edit);
+        click(edit);
+    }
+
+    public void clickApply (){
+        waitForVisible(apply);
+        click(apply);
+    }
+
 }

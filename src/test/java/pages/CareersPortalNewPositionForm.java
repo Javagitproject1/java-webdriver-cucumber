@@ -32,6 +32,15 @@ public class CareersPortalNewPositionForm extends CareersPortalHeader{
     @FindBy (xpath ="//button[@id='positionSubmit']")
     private WebElement positionSubmit;
 
+    @FindBy (xpath = "//label[@for='positionAddress']/following-sibling::span[@type='text']")
+    private WebElement address;
+
+    @FindBy (xpath = "//label[@for='positionCity']/following-sibling::span[@type='text']")
+    private WebElement city;
+
+    @FindBy (xpath ="//span[@type='text']")
+    private WebElement card;
+
     public void setTitle (String value){
         positionTitle.sendKeys(value);
     }
@@ -57,11 +66,37 @@ public class CareersPortalNewPositionForm extends CareersPortalHeader{
     }
 
     public void setDate (){
+        positionDate.clear();
         click(positionDate);
         click(currentDate);
     }
 
     public void submitPosition(){
         click(positionSubmit);
+    }
+
+    public void clearAddress(){
+        waitForElementIsClickable(positionAddress);
+        positionAddress.clear();
+    }
+
+    public void clearCity(){
+        waitForElementIsClickable(positionCity);
+        positionCity.clear();
+    }
+
+    public String getPositionAddress (){
+        waitForVisible(address);
+        return address.getText();
+    }
+
+    public String getPositionCity (){
+        waitForVisible(city);
+        return city.getText();
+    }
+
+    public String getCardInfo(){
+        waitForAllVisible(card);
+        return card.getText();
     }
 }

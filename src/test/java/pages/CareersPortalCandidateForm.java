@@ -2,7 +2,14 @@ package pages;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.concurrent.TimeUnit;
+
+import static support.TestContext.getDriver;
+import static support.TestContext.getWait;
 
 public class CareersPortalCandidateForm extends CareersPortalHeader{
 
@@ -35,6 +42,24 @@ public class CareersPortalCandidateForm extends CareersPortalHeader{
 
     @FindBy (xpath = "//label[@for='candidateZip']/following-sibling::input[@type='text']")
     private WebElement zip;
+
+    @FindBy (xpath = "//button[text()='Submit'][@type='submit']")
+    private WebElement submit;
+
+    @FindBy (xpath = "//button[text()='Delete Account'][@type='submit']")
+    private WebElement delete;
+
+    @FindBy (xpath = "//button[text()='Edit'][@type='submit']")
+    private WebElement edit;
+
+    @FindBy (xpath="//label[@for='candidateAddress']/following-sibling::span[@type='text']")
+    private WebElement candidateAddress;
+
+    @FindBy (xpath = "//label[@for='candidateSummary']/following-sibling::span")
+    private WebElement candidateSummary;
+
+    @FindBy (xpath = "//label[@for='candidateCity']/following-sibling::span[@type='text']")
+    private WebElement candidateCity;
 
     public void setFirstName(String value){
         firstName.sendKeys(value);
@@ -73,4 +98,43 @@ public class CareersPortalCandidateForm extends CareersPortalHeader{
         zip.sendKeys(value);
     }
 
+    public void clickSubmit(){
+        click(submit);
+    }
+
+    public void clickDeleteAccount(){
+        click(delete);
+    }
+
+    public void clickEdit (){
+        click(edit);
+    }
+
+    public void clearAddress (){
+        waitForElementIsClickable(address);
+        address.clear();
+    }
+    public void clearCity (){
+        waitForElementIsClickable(city);
+        city.clear();
+    }
+    public void clearSummary (){
+        waitForElementIsClickable(summary);
+        summary.clear();
+    }
+
+    public String getCandidateAddress (){
+        waitForVisible(candidateAddress);
+        return candidateAddress.getText();
+    }
+
+    public String getCandidateSummary (){
+        waitForVisible(candidateSummary);
+        return candidateSummary.getText();
+    }
+
+    public String getCandidateCity (){
+        waitForVisible(candidateCity);
+        return candidateCity.getText();
+    }
 }
