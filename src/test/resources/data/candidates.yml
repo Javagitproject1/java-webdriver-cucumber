@@ -1,0 +1,23 @@
+!!support.Candidates
+sdet:
+    firstName: Alexander
+    middleName: A
+    lastName: Duma
+    email: alexander_duma@example.com
+    password: qwerty
+    address: 111 1st street
+    city: Miami
+    state: Florida
+    zip: "11223"
+    summary: I'm a professional QA Automation Engineer with 10 years of experience in IT, E-commerce and HealthCare domains.
+qa:
+    firstName: Michael
+    middleName: John
+    lastName: Bloomberg
+    email: michaelbloomberg@example.com
+    password: alphabet
+    address: 111 Madison Avenue
+    city: Manhattan
+    state: New York
+    zip: "44332"
+    summary: I'm a professional QA Automation Engineer with 10 years of experience in IT, E-commerce and HealthCare domains.

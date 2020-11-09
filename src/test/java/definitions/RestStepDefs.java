@@ -3,8 +3,12 @@ package definitions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.apache.commons.codec.binary.Hex;
 import support.RestClient;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -84,7 +88,7 @@ public class RestStepDefs {
 
     @When("I create via REST {string} candidate")
     public void iCreateViaRESTCandidate(String sdet) {
-        new RestClient().createCandidate(getCandidate(sdet));
+        new RestClient().createCandidate(getCandidates(sdet));
     }
 
     @Then("I verify via REST new {string} candidate is in the list")
@@ -139,5 +143,20 @@ public class RestStepDefs {
         for (Map<String, Object> singleCandidate : allCandidates) {
             assertThat(singleCandidate.get("id")).isNotEqualTo(deletedId);
         }
+    }
+
+    @When("I add via REST {string} resume to the candidate")
+    public void iAddViaRESTResumeToTheCandidate(String fileType) {
+        File resume = getFile("resume", fileType );
+        new RestClient().addResume(resume, getTestDataMap("newCandidate").get("id"));
+    }
+
+    @Then("I verify via REST {string} resume has been added")
+    public void iVerifyViaRESTResumeHasBeenAdded(String fileType) {
+        ExtractableResponse <Response> response = new RestClient().getResume(getTestDataMap("newCandidate").get("id"));
+        String disposition =  response.header("content-disposition");
+        assertThat(disposition).isEqualTo("attachment, filename=resume." + fileType);
+
+        String signature = Hex.encodeHexString(response.asByteArray());
     }
 }

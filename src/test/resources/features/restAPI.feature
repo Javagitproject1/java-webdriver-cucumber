@@ -15,6 +15,8 @@
     Scenario: REST API Candidates CRUD
       Given I login via REST as "recruiter"
       When I create via REST "sdet" candidate
+      When I add via REST "txt" resume to the candidate
+      Then I verify via REST "txt" resume has been added
       Then I verify via REST new "sdet" candidate is in the list
       When I update via REST "sdet" candidate
       Then I verify via REST new "sdet" candidate is updated

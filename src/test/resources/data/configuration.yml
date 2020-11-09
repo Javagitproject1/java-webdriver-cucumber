@@ -1,0 +1,10 @@
+!!support.Configuration
+browser: chrome
+testEnvironment: local
+isHeadless: false
+implicitTimeOut: 2
+pageLoadTimeOut: 300
+explicitTimeOut: 5
+supportedOsList:
+  - map
+  - win

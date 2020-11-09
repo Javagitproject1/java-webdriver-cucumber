@@ -70,5 +70,3 @@
       And I see "Principal Automation Engineer" position in "My Jobs"
       When I withdraw from "Principal Automation Engineer" position
       Then I don't see "Principal Automation Engineer" position in my jobs
-
-

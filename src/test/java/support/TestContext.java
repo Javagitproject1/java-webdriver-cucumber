@@ -106,7 +106,7 @@ public class TestContext {
 
     //Extracted WebDriverWait function
     public static WebDriverWait getWait() {
-        return getWait(2);
+        return getWait(getConfig().explicitTimeOut);
     }
 
     public static WebDriverWait getWait(int timeout) {
@@ -136,8 +136,72 @@ public class TestContext {
         }
     }
 
+    public static Map<String, String> getCandidates(String type){
+        try {
+            String candidate = System.getProperty("user.dir") + "/src/test/resources/data/candidates.yml";
+            Candidates list = new Yaml().load(new FileInputStream(new File(candidate)));
+            switch (type){
+                case "sdet":
+                    String currentEmail = list.sdet.get("email");
+                    if (currentEmail != null) {
+                        String[] newEmail = currentEmail.split("@");
+                        list.sdet.put("email", newEmail[0] + getTimestamp() + "@" + newEmail[1]);
+                    }
+                    return list.sdet;
+                case "qa":
+                    String currentEmail1 = list.qa.get("email");
+                    if (currentEmail1 != null) {
+                        String[] newEmail = currentEmail1.split("@");
+                        list.qa.put("email", newEmail[0] + getTimestamp() + "@" + newEmail[1]);
+                    }
+                    return list.qa;
+            }
+            throw new RuntimeException("Candidate" + type + "not found");
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static File getFile (String filename, String extension){
+    String path = System.getProperty("user.dir") + "/src/test/resources/data/" + filename + "." + extension;
+    return new File(path);
+    }
+
+    public static Configuration getConfig(){
+        try {
+            String configPath = System.getProperty("user.dir") + "/src/test/resources/data/configuration.yml";
+            File file = new File(configPath);
+            InputStream stream = new FileInputStream(file);
+            return new Yaml ().load(stream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static Users getUsers(){
+        try {
+            String configPath = System.getProperty("user.dir") + "/src/test/resources/data/users.yml";
+            File file = new File(configPath);
+            InputStream stream = new FileInputStream(file);
+            return new Yaml ().load(stream);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Map <String, String> getUsers (String type) {
+        switch (type){
+            case "user": return getUsers().user;
+            case "admin": return getUsers().admin;
+        }
+        throw new RuntimeException("User is not found:" + type);
+    }
+
     public static void initialize() {
-        initialize("chrome", "local", false);
+        initialize(getConfig().browser, getConfig().testEnvironment, getConfig().isHeadless);
     }
 
     public static void teardown() {
